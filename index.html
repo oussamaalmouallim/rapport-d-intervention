@@ -249,7 +249,12 @@ setInterval(updateDateTime, 1000);
 updateDateTime();
 async function getLocationDetails(latitude, longitude) {
   try {
-    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`);
+    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`, {
+      headers: {
+        'Accept-Language': 'fr'
+      }
+    });
+    if (!response.ok) throw new Error('Erreur réseau');
     const data = await response.json();
     return data.display_name;
   } catch (error) {
@@ -260,10 +265,11 @@ async function getLocationDetails(latitude, longitude) {
 async function updateLocation() {
   const locationDiv = document.getElementById('location');
   try {
+    locationDiv.textContent = 'Recherche de la position...';
     const position = await new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(resolve, reject, {
         enableHighAccuracy: true,
-        timeout: 5000,
+        timeout: 3000,
         maximumAge: 0
       });
     });
@@ -271,6 +277,13 @@ async function updateLocation() {
       latitude,
       longitude
     } = position.coords;
+    locationDiv.innerHTML = `
+      <div>Coordonnées trouvées</div>
+      <div class="location-details">
+        Latitude: ${latitude.toFixed(6)}<br>
+        Longitude: ${longitude.toFixed(6)}
+      </div>
+    `;
     const address = await getLocationDetails(latitude, longitude);
     if (address) {
       locationDiv.innerHTML = `
@@ -280,13 +293,17 @@ async function updateLocation() {
           Longitude: ${longitude.toFixed(6)}
         </div>
       `;
-    } else {
-      locationDiv.textContent = `Latitude: ${latitude.toFixed(6)}, Longitude: ${longitude.toFixed(6)}`;
     }
   } catch (error) {
     locationDiv.textContent = `Erreur de localisation: ${error.message}`;
   }
 }
+updateLocation();
+setInterval(() => {
+  if (document.getElementById('location').textContent.includes('Erreur') || document.getElementById('location').textContent.includes('Recherche')) {
+    updateLocation();
+  }
+}, 30000);
 if (navigator.geolocation) {}
 document.getElementById('mediaCapture').addEventListener('change', function (e) {
   const preview = document.getElementById('preview');
