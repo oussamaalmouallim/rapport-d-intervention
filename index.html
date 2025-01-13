@@ -179,6 +179,11 @@
             </div>
 
             <div class="form-group">
+                <label for="projectName">Nom du Projet/Client:</label>
+                <input type="text" id="projectName" required>
+            </div>
+
+            <div class="form-group">
                 <label>Date et Heure:</label>
                 <div id="datetime"></div>
             </div>
@@ -189,15 +194,10 @@
             </div>
 
             <div class="form-group">
-              <label for="ProjectName">Nom de projet / client:</label>
-              <textarea id="ProjectName" class="ProjectName-field" placeholder="Ajoutez le nom de projet / client ici..."></textarea>
-          </div>
-
-            <div class="form-group">
                 <label>Type d&apos;Intervention:</label>
                 <select id="interventionType" required>
                     <option value>S&#xe9;lectionnez le type</option>
-                    <option value="electricite">&#xc9;lectricit&#xe9;</option>
+                    <option value="electricite">&#xe9;lectricit&#xe9;</option>
                     <option value="domotique">Programmation (Domotique)</option>
                     <option value="climatisation">Climatisation</option>
                     <option value="sonorisation">Sonorisation</option>
@@ -408,6 +408,7 @@ function generatePDF() {
   const doc = new jsPDF();
   const form = document.getElementById('technicianForm');
   const technicianName = form.technicianName.options[form.technicianName.selectedIndex].text;
+  const projectName = document.getElementById('projectName').value;
   document.getElementById('technicianName').nextElementSibling?.remove();
   const responseTag = document.createElement('div');
   responseTag.className = 'response-tag';
@@ -415,7 +416,6 @@ function generatePDF() {
   form.technicianName.parentNode.appendChild(responseTag);
   const date = document.getElementById('datetime').textContent;
   const location = document.getElementById('location').innerText;
-  const ProjectName= document.getElementById('ProjectName').innerText;
   const interventionType = document.getElementById('interventionType').options[document.getElementById('interventionType').selectedIndex].text;
   const problemType = document.getElementById('problemType').options[document.getElementById('problemType').selectedIndex].text;
   const status = document.querySelector('input[name="status"]:checked')?.labels[0].textContent || '';
@@ -435,19 +435,20 @@ function generatePDF() {
   doc.setFontSize(11);
   doc.setTextColor(68, 68, 68);
   doc.text(`Nom: ${technicianName}`, 30, 60);
-  doc.text(`Date et Heure: ${date}`, 30, 70);
+  doc.text(`Projet/Client: ${projectName}`, 30, 70);
+  doc.text(`Date et Heure: ${date}`, 30, 80);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(14);
   doc.setTextColor(51, 51, 51);
-  doc.text("Localisation", 25, 85);
+  doc.text("Localisation", 25, 95);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(11);
   doc.setTextColor(68, 68, 68);
   const locationLines = doc.splitTextToSize(location, 160);
   for (let i = 0; i < locationLines.length; i++) {
-    doc.text(locationLines[i], 30, 95 + i * 7);
+    doc.text(locationLines[i], 30, 105 + i * 7);
   }
-  let yPos = 95 + locationLines.length * 7;
+  let yPos = 105 + locationLines.length * 7;
   doc.setFont("helvetica", "bold");
   doc.setFontSize(14);
   doc.setTextColor(51, 51, 51);
@@ -514,13 +515,13 @@ function updateSummaryTable() {
   const summaryTableBody = document.getElementById('summaryTableBody');
   summaryTableBody.innerHTML = '';
   const technicianName = document.getElementById('technicianName');
-  const ProjectName = document.getElementById('ProjectName');
+  const projectName = document.getElementById('projectName');
   const interventionType = document.getElementById('interventionType');
   const problemType = document.getElementById('problemType');
   const status = document.querySelector('input[name="status"]:checked');
   const interventionStatus = document.getElementById('interventionStatus');
   const comments = document.getElementById('comments');
-  const rows = [['Technicien', technicianName.options[technicianName.selectedIndex].text], ['Type d\'Intervention', interventionType.options[interventionType.selectedIndex].text], ['Nature du Problème', problemType.options[problemType.selectedIndex].text], ['État', status ? status.labels[0].textContent : ''], ['Statut de l\'intervention', interventionStatus.options[interventionStatus.selectedIndex].text], ['Commentaires', comments.value]];
+  const rows = [['Technicien', technicianName.options[technicianName.selectedIndex].text], ['Projet/Client', projectName.value], ['Type d\'Intervention', interventionType.options[interventionType.selectedIndex].text], ['Nature du Problème', problemType.options[problemType.selectedIndex].text], ['État', status ? status.labels[0].textContent : ''], ['Statut de l\'intervention', interventionStatus.options[interventionStatus.selectedIndex].text], ['Commentaires', comments.value]];
   rows.forEach(([field, value]) => {
     if (value && value !== 'Sélectionnez un technicien' && value !== 'Sélectionnez le type' && value !== 'Sélectionnez le problème' && value !== 'Sélectionnez le statut') {
       const row = document.createElement('tr');
@@ -566,6 +567,9 @@ document.getElementById('interventionStatus').addEventListener('change', functio
   updateSummaryTable();
 });
 document.getElementById('comments').addEventListener('input', function (e) {
+  updateSummaryTable();
+});
+document.getElementById('projectName').addEventListener('input', function (e) {
   updateSummaryTable();
 });</script>
 </body>
