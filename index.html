@@ -246,15 +246,6 @@
             </div>
 
             <div class="form-group">
-                <label>Commentaires Vocaux:</label>
-                <div class="recording-controls">
-                    <button type="button" id="startRecording">D&#xe9;marrer l&apos;Enregistrement</button>
-                    <button type="button" id="stopRecording" disabled>Arr&#xea;ter l&apos;Enregistrement</button>
-                </div>
-                <div id="recordings"></div>
-            </div>
-
-            <div class="form-group">
                 <table class="summary-table">
                     <caption>R&#xe9;capitulatif de l&apos;Intervention</caption>
                     <tr>
@@ -359,40 +350,6 @@ document.getElementById('mediaCapture').addEventListener('change', function (e) 
     };
     reader.readAsDataURL(file);
   });
-});
-let mediaRecorder;
-let audioChunks = [];
-document.getElementById('startRecording').addEventListener('click', async () => {
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      audio: true
-    });
-    mediaRecorder = new MediaRecorder(stream);
-    mediaRecorder.ondataavailable = e => {
-      audioChunks.push(e.data);
-    };
-    mediaRecorder.onstop = () => {
-      const audioBlob = new Blob(audioChunks, {
-        type: 'audio/wav'
-      });
-      const audioUrl = URL.createObjectURL(audioBlob);
-      const audio = document.createElement('audio');
-      audio.src = audioUrl;
-      audio.controls = true;
-      document.getElementById('recordings').appendChild(audio);
-      audioChunks = [];
-    };
-    mediaRecorder.start();
-    document.getElementById('startRecording').disabled = true;
-    document.getElementById('stopRecording').disabled = false;
-  } catch (err) {
-    console.error('Erreur lors de l\'enregistrement:', err);
-  }
-});
-document.getElementById('stopRecording').addEventListener('click', () => {
-  mediaRecorder.stop();
-  document.getElementById('startRecording').disabled = false;
-  document.getElementById('stopRecording').disabled = true;
 });
 document.getElementById('interventionType').addEventListener('change', function () {
   const problemType = document.getElementById('problemType');
