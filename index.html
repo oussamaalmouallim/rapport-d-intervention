@@ -415,6 +415,7 @@ function generatePDF() {
   form.technicianName.parentNode.appendChild(responseTag);
   const date = document.getElementById('datetime').textContent;
   const location = document.getElementById('location').innerText;
+  const ProjectName= document.getElementById('ProjectName').innerText;
   const interventionType = document.getElementById('interventionType').options[document.getElementById('interventionType').selectedIndex].text;
   const problemType = document.getElementById('problemType').options[document.getElementById('problemType').selectedIndex].text;
   const status = document.querySelector('input[name="status"]:checked')?.labels[0].textContent || '';
@@ -513,6 +514,7 @@ function updateSummaryTable() {
   const summaryTableBody = document.getElementById('summaryTableBody');
   summaryTableBody.innerHTML = '';
   const technicianName = document.getElementById('technicianName');
+  const ProjectName = document.getElementById('ProjectName');
   const interventionType = document.getElementById('interventionType');
   const problemType = document.getElementById('problemType');
   const status = document.querySelector('input[name="status"]:checked');
