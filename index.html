@@ -193,7 +193,7 @@
 
             <div class="form-group">
                 <label>Type d&apos;Intervention:</label>
-                <select id="interventionType" multiple required>
+                <select id="interventionType" required>
                     <option value>S&#xe9;lectionnez le type</option>
                     <option value="electricite">&#xc9;lectricit&#xe9;</option>
                     <option value="domotique">Programmation (Domotique)</option>
@@ -205,7 +205,7 @@
 
             <div class="form-group">
                 <label>Nature du Probl&#xe8;me:</label>
-                <select id="problemType" multiple required>
+                <select id="problemType" required>
                     <option value>S&#xe9;lectionnez le probl&#xe8;me</option>
                 </select>
             </div>
@@ -407,17 +407,15 @@ document.getElementById('interventionType').addEventListener('change', function 
     'sonorisation': ['Problèmes de connectivité', 'Qualité sonore dégradée', 'Défaillance des amplificateurs', 'Pannes des haut-parleurs'],
     'videophone': ['Problèmes de connexion réseau', 'Problèmes d\'alimentation', 'Qualité vidéo ou audio dégradée', 'Bouton d\'appel défectueux', 'Problèmes de synchronisation']
   };
-  const selectedTypes = Array.from(this.selectedOptions).map(option => option.value);
-  selectedTypes.forEach(selectedType => {
-    if (selectedType && problems[selectedType]) {
-      problems[selectedType].forEach(problem => {
-        const option = document.createElement('option');
-        option.value = problem.toLowerCase().replace(/\s+/g, '_');
-        option.textContent = problem;
-        problemType.appendChild(option);
-      });
-    }
-  });
+  const selectedType = this.value;
+  if (selectedType && problems[selectedType]) {
+    problems[selectedType].forEach(problem => {
+      const option = document.createElement('option');
+      option.value = problem.toLowerCase().replace(/\s+/g, '_');
+      option.textContent = problem;
+      problemType.appendChild(option);
+    });
+  }
 });
 document.getElementById('problemType').addEventListener('change', function (e) {
   const previousResponse = this.nextElementSibling;
@@ -563,15 +561,7 @@ function updateSummaryTable() {
   const status = document.querySelector('input[name="status"]:checked');
   const interventionStatus = document.getElementById('interventionStatus');
   const comments = document.getElementById('comments');
-  const rows = [
-    ['Projet/Client', document.getElementById('projectName').value],
-    ['Technicien', technicianName.options[technicianName.selectedIndex].text],
-    ['Type d\'Intervention', Array.from(interventionType.selectedOptions).map(option => option.text).join(', ')],
-    ['Nature du Problème', Array.from(problemType.selectedOptions).map(option => option.text).join(', ')],
-    ['État', status ? status.labels[0].textContent : ''],
-    ['Statut de l\'intervention', interventionStatus.options[interventionStatus.selectedIndex].text],
-    ['Commentaires', comments.value]
-  ];
+  const rows = [['Projet/Client', document.getElementById('projectName').value], ['Technicien', technicianName.options[technicianName.selectedIndex].text], ['Type d\'Intervention', interventionType.options[interventionType.selectedIndex].text], ['Nature du Problème', problemType.options[problemType.selectedIndex].text], ['État', status ? status.labels[0].textContent : ''], ['Statut de l\'intervention', interventionStatus.options[interventionStatus.selectedIndex].text], ['Commentaires', comments.value]];
   rows.forEach(([field, value]) => {
     if (value && value !== 'Sélectionnez un technicien' && value !== 'Sélectionnez le type' && value !== 'Sélectionnez le problème' && value !== 'Sélectionnez le statut') {
       const row = document.createElement('tr');
