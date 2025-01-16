@@ -193,7 +193,7 @@
 
             <div class="form-group">
                 <label>Type d&apos;Intervention:</label>
-                <select id="interventionType" required>
+                <select id="interventionType" multiple required>
                     <option value>S&#xe9;lectionnez le type</option>
                     <option value="electricite">&#xc9;lectricit&#xe9;</option>
                     <option value="domotique">Programmation (Domotique)</option>
@@ -205,7 +205,7 @@
 
             <div class="form-group">
                 <label>Nature du Probl&#xe8;me:</label>
-                <select id="problemType" required>
+                <select id="problemType" multiple required>
                     <option value>S&#xe9;lectionnez le probl&#xe8;me</option>
                 </select>
             </div>
@@ -398,24 +398,26 @@ document.getElementById('stopRecording').addEventListener('click', () => {
   document.getElementById('stopRecording').disabled = true;
 });
 document.getElementById('interventionType').addEventListener('change', function () {
-  const problemType = document.getElementById('problemType');
-  problemType.innerHTML = '<option value="">Sélectionnez le problème</option>';
-  const problems = {
-    'electricite': ['Pannes de courant', 'Problèmes de câblage', 'Prises défectueuses', 'Éclairage défaillant'],
-    'domotique': ['Problèmes de connectivité', 'Bugs logiciels', 'Erreurs de configuration', 'Mises à jour manquantes', 'Incompatibilité des appareils'],
-    'climatisation': ['Insuffisance de refroidissement', 'Problèmes de thermostat', 'Bruits inhabituels'],
-    'sonorisation': ['Problèmes de connectivité', 'Qualité sonore dégradée', 'Défaillance des amplificateurs', 'Pannes des haut-parleurs'],
-    'videophone': ['Problèmes de connexion réseau', 'Problèmes d\'alimentation', 'Qualité vidéo ou audio dégradée', 'Bouton d\'appel défectueux', 'Problèmes de synchronisation']
-  };
-  const selectedType = this.value;
-  if (selectedType && problems[selectedType]) {
-    problems[selectedType].forEach(problem => {
-      const option = document.createElement('option');
-      option.value = problem.toLowerCase().replace(/\s+/g, '_');
-      option.textContent = problem;
-      problemType.appendChild(option);
+    const problemType = document.getElementById('problemType');
+    problemType.innerHTML = '<option value="">Sélectionnez le problème</option>';
+    const problems = {
+        'electricite': ['Pannes de courant', 'Problèmes de câblage', 'Prises défectueuses', 'Éclairage défaillant'],
+        'domotique': ['Problèmes de connectivité', 'Bugs logiciels', 'Erreurs de configuration', 'Mises à jour manquantes', 'Incompatibilité des appareils'],
+        'climatisation': ['Insuffisance de refroidissement', 'Problèmes de thermostat', 'Bruits inhabituels'],
+        'sonorisation': ['Problèmes de connectivité', 'Qualité sonore dégradée', 'Défaillance des amplificateurs', 'Pannes des haut-parleurs'],
+        'videophone': ['Problèmes de connexion réseau', 'Problèmes d\'alimentation', 'Qualité vidéo ou audio dégradée', 'Bouton d\'appel défectueux', 'Problèmes de synchronisation']
+    };
+    const selectedTypes = Array.from(this.selectedOptions).map(option => option.value);
+    selectedTypes.forEach(selectedType => {
+        if (selectedType && problems[selectedType]) {
+            problems[selectedType].forEach(problem => {
+                const option = document.createElement('option');
+                option.value = problem.toLowerCase().replace(/\s+/g, '_');
+                option.textContent = problem;
+                problemType.appendChild(option);
+            });
+        }
     });
-  }
 });
 document.getElementById('problemType').addEventListener('change', function (e) {
   const previousResponse = this.nextElementSibling;
