@@ -443,7 +443,7 @@ function generatePDF() {
   const problemType = document.getElementById('problemType').options[document.getElementById('problemType').selectedIndex].text;
   const status = document.querySelector('input[name="status"]:checked')?.labels[0].textContent || '';
   const interventionStatus = document.getElementById('interventionStatus').options[document.getElementById('interventionStatus').selectedIndex].text;
-  const comments = document.getElementById('comments').value;
+  const comments = document.getElementById('comments').value || "Pas de commentaire";
   const projectName = document.getElementById('projectName').value;
   doc.setFillColor(245, 245, 245);
   doc.rect(0, 0, 220, 297, 'F');
@@ -572,7 +572,7 @@ function updateSummaryTable() {
   const status = document.querySelector('input[name="status"]:checked');
   const interventionStatus = document.getElementById('interventionStatus');
   const comments = document.getElementById('comments');
-  const rows = [['Projet/Client', document.getElementById('projectName').value], ['Technicien', technicianName.options[technicianName.selectedIndex].text], ['Type d\'Intervention', interventionType.options[interventionType.selectedIndex].text], ['Nature du Problème', problemType.options[problemType.selectedIndex].text], ['État', status ? status.labels[0].textContent : ''], ['Statut de l\'intervention', interventionStatus.options[interventionStatus.selectedIndex].text], ['Commentaires', comments.value]];
+  const rows = [['Projet/Client', document.getElementById('projectName').value], ['Technicien', technicianName.options[technicianName.selectedIndex].text], ['Type d\'Intervention', interventionType.options[interventionType.selectedIndex].text], ['Nature du Problème', problemType.options[problemType.selectedIndex].text], ['État', status ? status.labels[0].textContent : ''], ['Statut de l\'intervention', interventionStatus.options[interventionStatus.selectedIndex].text], ['Commentaires', comments.value || "Pas de commentaire"]];
   if (interventionTypeHistory.length > 1) {
     rows.push(['Historique des Types d\'Intervention', interventionTypeHistory.slice(0, -1).map(h => `${h.text} (${new Date(h.timestamp).toLocaleTimeString()})`).join(', ')]);
   }
