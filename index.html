@@ -175,7 +175,7 @@
                   <option value="ACHRAF">ACHRAF</option>
                   <option value="AYMEN">AYMEN</option>
                   <option value="REDA">REDA</option>
-                  <option value="ABDERAHMANE">ABDERAHMANE</option>
+                  <option value="ABDERAHMAN">ABDERAHMAN</option>
                   <option value="NOURDINE">NOURDINE</option>
                   <option value="autre">Autre</option>
               </select>
@@ -357,6 +357,8 @@ preview.innerHTML = '';
   reader.readAsDataURL(file);
 });
 });
+let mediaRecorder;
+let audioChunks = [];
 document.getElementById('interventionType').addEventListener('change', function () {
 const problemType = document.getElementById('problemType');
 problemType.innerHTML = '<option value="">Sélectionnez le problème</option>';
@@ -537,6 +539,15 @@ if (document.getElementById('preview').children.length > 0) {
   }
   page2YPos = imageY + 10;
 }
+if (document.getElementById('recordings').children.length > 0) {
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(14);
+  doc.setTextColor(51, 51, 51);
+  doc.text("Enregistrements Audio", 25, page2YPos);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(11);
+  doc.setTextColor(68, 68, 68);
+  doc.text("Commentaires vocaux attachés à l'intervention", 30, page2YPos + 10);
 }
 doc.setFont("helvetica", "italic");
 doc.setFontSize(9);
