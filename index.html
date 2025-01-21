@@ -155,6 +155,28 @@
           border: 1px solid #ddd;
           width: 100%;
       }
+      .preview-item {
+          display: inline-block;
+          position: relative;
+          margin: 10px;
+      }
+
+      .delete-btn {
+          position: absolute;
+          top: -10px;
+          right: -10px;
+          background: red;
+          color: white;
+          border: none;
+          border-radius: 50%;
+          width: 20px;
+          height: 20px;
+          line-height: 20px;
+          text-align: center;
+          cursor: pointer;
+          font-size: 12px;
+          padding: 0;
+      }
   </style>
 </head>
 <body>
@@ -345,20 +367,28 @@ document.getElementById('mediaCapture').addEventListener('change', function (e) 
   [...e.target.files].forEach(file => {
     const reader = new FileReader();
     reader.onload = function (e) {
+      const previewItem = document.createElement('div');
+      previewItem.className = 'preview-item';
       if (file.type.startsWith('image/')) {
         const img = document.createElement('img');
         img.src = e.target.result;
         img.style.maxWidth = '200px';
-        img.style.margin = '10px';
-        preview.appendChild(img);
+        previewItem.appendChild(img);
       } else if (file.type.startsWith('video/')) {
         const video = document.createElement('video');
         video.src = e.target.result;
         video.controls = true;
         video.style.maxWidth = '200px';
-        video.style.margin = '10px';
-        preview.appendChild(video);
+        previewItem.appendChild(video);
       }
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'delete-btn';
+      deleteBtn.innerHTML = '×';
+      deleteBtn.onclick = function () {
+        previewItem.remove();
+      };
+      previewItem.appendChild(deleteBtn);
+      preview.appendChild(previewItem);
     };
     reader.readAsDataURL(file);
   });
