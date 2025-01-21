@@ -109,6 +109,7 @@
           display: inline-block;
           font-size: 0.9em;
           color: #495057;
+          margin-top: 5px;
       }
 
       .summary-table {
@@ -366,6 +367,8 @@ let mediaRecorder;
 let audioChunks = [];
 document.getElementById('interventionType').addEventListener('change', function () {
   const problemType = document.getElementById('problemType');
+  const responseTags = problemType.parentNode.querySelectorAll('.response-tag');
+  responseTags.forEach(tag => tag.remove());
   problemType.innerHTML = '<option value="">Sélectionnez le problème</option>';
   const problems = {
     'electricite': ['Pannes de courant', 'Problèmes de câblage', 'Prises défectueuses', 'Éclairage défaillant', 'Autre'],
@@ -391,13 +394,14 @@ document.getElementById('interventionType').addEventListener('change', function 
       option.textContent = problem;
       problemType.appendChild(option);
     });
+    const selectedTypeText = this.options[this.selectedIndex].text;
+    const responseTag = document.createElement('div');
+    responseTag.className = 'response-tag';
+    responseTag.textContent = selectedTypeText;
+    this.parentNode.appendChild(responseTag);
   }
 });
 document.getElementById('problemType').addEventListener('change', function (e) {
-  const previousResponse = this.nextElementSibling;
-  if (previousResponse?.className === 'response-tag') {
-    previousResponse.remove();
-  }
   if (this.value) {
     problemTypeHistory.push({
       value: this.value,
