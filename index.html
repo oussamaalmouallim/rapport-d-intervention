@@ -600,19 +600,34 @@ document.getElementById('technicianName').addEventListener('change', function (e
 function updateSummaryTable() {
   const summaryTableBody = document.getElementById('summaryTableBody');
   summaryTableBody.innerHTML = '';
+
   const technicianName = document.getElementById('technicianName');
   const interventionType = document.getElementById('interventionType');
   const problemType = document.getElementById('problemType');
   const status = document.querySelector('input[name="status"]:checked');
   const interventionStatus = document.getElementById('interventionStatus');
   const comments = document.getElementById('comments');
-  const rows = [['Projet/Client', document.getElementById('projectName').value], ['Technicien', technicianName.options[technicianName.selectedIndex].text], ['Type d\'Intervention', interventionType.options[interventionType.selectedIndex].text], ['Nature du Problème', problemType.options[problemType.selectedIndex].text], ['État', status ? status.labels[0].textContent : ''], ['Statut de l\'intervention', interventionStatus.options[interventionStatus.selectedIndex].text], ['Commentaires', comments.value || "Pas de commentaire"]];
+
+  const rows = [
+    ['Date et Heure', document.getElementById('datetime').textContent],
+    ['Localisation', document.getElementById('location').textContent],
+    ['Projet/Client', document.getElementById('projectName').value],
+    ['Technicien', technicianName.options[technicianName.selectedIndex].text],
+    ['Type d\'Intervention', interventionType.options[interventionType.selectedIndex].text],
+    ['Nature du Problème', problemType.options[problemType.selectedIndex].text],
+    ['État', status ? status.labels[0].textContent : ''],
+    ['Statut de l\'intervention', interventionStatus.options[interventionStatus.selectedIndex].text],
+    ['Commentaires', comments.value || "Pas de commentaire"]
+  ];
+
   if (interventionTypeHistory.length > 1) {
     rows.push(['Historique des Types d\'Intervention', interventionTypeHistory.slice(0, -1).map(h => `${h.text} (${new Date(h.timestamp).toLocaleTimeString()})`).join(', ')]);
   }
+
   if (problemTypeHistory.length > 1) {
     rows.push(['Historique des Problèmes', problemTypeHistory.slice(0, -1).map(h => `${h.text} (${new Date(h.timestamp).toLocaleTimeString()})`).join(', ')]);
   }
+
   rows.forEach(([field, value]) => {
     if (value && value !== 'Sélectionnez un technicien' && value !== 'Sélectionnez le type' && value !== 'Sélectionnez le problème' && value !== 'Sélectionnez le statut') {
       const row = document.createElement('tr');
