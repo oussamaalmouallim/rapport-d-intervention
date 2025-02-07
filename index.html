@@ -178,122 +178,205 @@
           padding: 0;
       }
   </style>
-</head>
-<body>
-  <div class="form-container">
+      <!-- Inclure Firebase SDK -->
+      <script type="module">
+          // Importer les services Firebase nécessaires
+          import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+          import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  
+          // 🔹 Configuration Firebase avec l’emplacement correct
+          const firebaseConfig = {
+              apiKey: "AIzaSyDF13i8rEL6fCGzBJgJ2i90ZeCoa4m0QE8",
+              authDomain: "rapport-tech.firebaseapp.com",
+              projectId: "rapport-tech",
+              storageBucket: "rapport-tech.appspot.com",
+              databaseURL: "https://rapport-tech-default-rtdb.nam5.firebasedatabase.app", // 🔹 Ajout de l'URL correcte
+              messagingSenderId: "809720609386",
+              appId: "1:809720609386:web:b4308319b85f288d09e813",
+              measurementId: "G-7G2Q57VHRT"
+          };
+  
+          // Initialisation de Firebase et Firestore
+          const app = initializeApp(firebaseConfig);
+          const db = getFirestore(app);
+  
+          // Fonction pour récupérer la date et l'heure actuelle
+          function updateDateTime() {
+              const now = new Date();
+              const formattedDateTime = now.toLocaleString("fr-FR");
+              document.getElementById("datetime").textContent = formattedDateTime;
+              document.getElementById("dateTimeInput").value = now.toISOString();
+          }
+  
+          // Mettre à jour la date et l'heure à l'affichage
+          document.addEventListener("DOMContentLoaded", updateDateTime);
+  
+          // Fonction pour récupérer la localisation
+          function getLocation() {
+              if (navigator.geolocation) {
+                  navigator.geolocation.getCurrentPosition(
+                      (position) => {
+                          const coords = `Lat: ${position.coords.latitude}, Long: ${position.coords.longitude}`;
+                          document.getElementById("location").textContent = coords;
+                          document.getElementById("locationInput").value = coords;
+                      },
+                      (error) => {
+                          document.getElementById("location").textContent = "Localisation indisponible";
+                      }
+                  );
+              }
+          }
+  
+          // Obtenir la localisation à l'affichage
+          document.addEventListener("DOMContentLoaded", getLocation);
+  
+          // Fonction pour envoyer le formulaire vers Firestore
+          document.addEventListener("DOMContentLoaded", function() {
+              document.getElementById("technicianForm").addEventListener("submit", async function(event) {
+                  event.preventDefault(); // Empêche le rechargement de la page
+  
+                  try {
+                      await addDoc(collection(db, "interventionReports"), {
+                          technicianName: document.getElementById("technicianName").value,
+                          dateTime: document.getElementById("dateTimeInput").value,
+                          location: document.getElementById("locationInput").value,
+                          interventionType: document.getElementById("interventionType").value,
+                          problemType: document.getElementById("problemType").value,
+                          status: document.querySelector("input[name='status']:checked").value,
+                          interventionStatus: document.getElementById("interventionStatus").value,
+                          projectName: document.getElementById("projectName").value,
+                          comments: document.getElementById("comments").value,
+                          timestamp: new Date() // Ajout d'un timestamp pour Firestore
+                      });
+  
+                      alert("Rapport soumis avec succès !");
+                      document.getElementById("technicianForm").reset(); // Réinitialiser le formulaire après envoi
+                  } catch (error) {
+                      console.error("Erreur lors de l'envoi :", error);
+                      alert("Erreur lors de l'envoi du rapport !");
+                  }
+              });
+          });
+      </script>
+  </head>
+  <body>
+    <div class="form-container">
       <h1>Rapport d&apos;Intervention Technique</h1>
       <div class="form-group">
           <label for="projectName">Nom du Projet/Client:</label>
           <input type="text" id="projectName" required>
       </div>
-      <form id="technicianForm" name="contact" method="POST" data-netlify="true">
-          <div class="form-group">
-              <label for="technicianName">Nom du Technicien:</label>
-              <select id="technicianName" required>
-                  <option value>S&#xe9;lectionnez un technicien</option>
-                  <option value="DRISS">DRISS</option>
-                  <option value="BRAHIM">BRAHIM</option>
-                  <option value="MOUSSTAFA">MOUSSTAFA</option>
-                  <option value="YOUSSEF">YOUSSEF</option>
-                  <option value="ACHRAF">ACHRAF</option>
-                  <option value="AYMEN">AYMEN</option>
-                  <option value="REDA">REDA</option>
-                  <option value="ABDERAHMAN">ABDERAHMAN</option>
-                  <option value="NOURDINE">NOURDINE</option>
-                  <option value="autre">Autre</option>
-              </select>
-          </div>
+  <form id="technicianForm">
+      <div class="form-group">
+          <label for="technicianName">Nom du Technicien:</label>
+          <select id="technicianName" name="technicianName" required>
+              <option value="">Sélectionnez un technicien</option>
+              <option value="DRISS">DRISS</option>
+              <option value="BRAHIM">BRAHIM</option>
+              <option value="MOUSSTAFA">MOUSSTAFA</option>
+              <option value="YOUSSEF">YOUSSEF</option>
+              <option value="ACHRAF">ACHRAF</option>
+              <option value="AYMEN">AYMEN</option>
+              <option value="REDA">REDA</option>
+              <option value="ABDERAHMAN">ABDERAHMAN</option>
+              <option value="NOURDINE">NOURDINE</option>
+              <option value="autre">Autre</option>
+          </select>
+      </div>
+  
+      <div class="form-group">
+          <label>Date et Heure:</label>
+          <div id="datetime"></div>
+          <input type="hidden" name="dateTime" id="dateTimeInput">
+      </div>
+  
+      <div class="form-group">
+          <label>Localisation:</label>
+          <div id="location">Recherche de la position...</div>
+          <input type="hidden" name="location" id="locationInput">
+      </div>
+  
+      <div class="form-group">
+          <label>Type d&apos;Intervention:</label>
+          <select id="interventionType" name="interventionType" required>
+              <option value="">Sélectionnez le type</option>
+              <option value="electricite">Électricité</option>
+              <option value="domotique">Programmation (Domotique)</option>
+              <option value="climatisation">Climatisation</option>
+              <option value="sonorisation">Sonorisation</option>
+              <option value="videophone">Vidéophone</option>
+              <option value="supervision">Supervision</option>
+              <option value="autre">Autre</option>
+          </select>
+      </div>
+  
+      <div class="form-group">
+        <label>Nature du Probl&#xe8;me:</label>
+        <select id="problemType" required>
+            <option value>S&#xe9;lectionnez le probl&#xe8;me</option>
+        </select>
+    </div>
 
-          <div class="form-group">
-              <label>Date et Heure:</label>
-              <div id="datetime"></div>
-          </div>
+    <div class="form-group">
+        <label>&#xc9;tat de l&apos;Intervention:</label>
+        <div class="radio-group">
+            <div class="radio-option">
+                <input type="radio" id="repare" name="status" value="repare" required>
+                <label for="repare">R&#xe9;par&#xe9;</label>
+            </div>
+            <div class="radio-option">
+                <input type="radio" id="remplacement" name="status" value="remplacement">
+                <label for="remplacement">Remplacement de pi&#xe8;ce</label>
+            </div>
+            <div class="radio-option">
+                <input type="radio" id="maintenance" name="status" value="maintenance">
+                <label for="maintenance">Maintenance pr&#xe9;ventive</label>
+            </div>
+            <div class="radio-option">
+                <input type="radio" id="autre" name="status" value="autre">
+                <label for="autre">Autre</label>
+            </div>
+        </div>
+    </div>
+  
 
-          <div class="form-group">
-              <label>Localisation:</label>
-              <div id="location">Recherche de la position...</div>
-          </div>
+      <div class="form-group">
+          <label for="interventionStatus">Statut de l'intervention:</label>
+          <select id="interventionStatus" name="interventionStatus" required>
+              <option value="">Sélectionnez le statut</option>
+              <option value="en_cours">En cours</option>
+              <option value="terminee">Terminée</option>
+          </select>
+      </div>
+  
+      <div class="form-group">
+          <label for="comments">Commentaires:</label>
+          <textarea id="comments" name="comments" placeholder="Ajoutez vos commentaires ici..."></textarea>
+      </div>
+      <div class="capture-section">
+        <label>Photos/Vid&#xe9;os de l&apos;Intervention:</label>
+        <input type="file" id="mediaCapture" accept="image/*,video/*" multiple>
+        <div id="preview"></div>
+    </div>
 
-          <div class="form-group">
-              <label>Type d&apos;Intervention:</label>
-              <select id="interventionType" required>
-                  <option value>S&#xe9;lectionnez le type</option>
-                  <option value="electricite">&#xc9;lectricit&#xe9;</option>
-                  <option value="domotique">Programmation (Domotique)</option>
-                  <option value="climatisation">Climatisation</option>
-                  <option value="sonorisation">Sonorisation</option>
-                  <option value="videophone">Vid&#xe9;ophone</option>
-                  <option value="supervision">Supervision</option>
-                  <option value="autre">Autre</option>
-              </select>
-          </div>
+    <div class="form-group">
+        <table class="summary-table">
+            <caption>R&#xe9;capitulatif de l&apos;Intervention</caption>
+            <tr>
+                <th>Champ</th>
+                <th>S&#xe9;lection</th>
+            </tr>
+            <tbody id="summaryTableBody">
+            </tbody>
+        </table>
+        <button type="button" id="exportExcel" style="margin-top: 10px; background-color: #28a745;">Exporter en Excel</button>
+    </div>
 
-          <div class="form-group">
-              <label>Nature du Probl&#xe8;me:</label>
-              <select id="problemType" required>
-                  <option value>S&#xe9;lectionnez le probl&#xe8;me</option>
-              </select>
-          </div>
-
-          <div class="form-group">
-              <label>&#xc9;tat de l&apos;Intervention:</label>
-              <div class="radio-group">
-                  <div class="radio-option">
-                      <input type="radio" id="repare" name="status" value="repare" required>
-                      <label for="repare">R&#xe9;par&#xe9;</label>
-                  </div>
-                  <div class="radio-option">
-                      <input type="radio" id="remplacement" name="status" value="remplacement">
-                      <label for="remplacement">Remplacement de pi&#xe8;ce</label>
-                  </div>
-                  <div class="radio-option">
-                      <input type="radio" id="maintenance" name="status" value="maintenance">
-                      <label for="maintenance">Maintenance pr&#xe9;ventive</label>
-                  </div>
-                  <div class="radio-option">
-                      <input type="radio" id="autre" name="status" value="autre">
-                      <label for="autre">Autre</label>
-                  </div>
-              </div>
-          </div>
-
-          <div class="form-group">
-              <label for="interventionStatus">Statut de l&apos;intervention:</label>
-              <select id="interventionStatus" class="status-select" required>
-                  <option value>S&#xe9;lectionnez le statut</option>
-                  <option value="en_cours">En cours</option>
-                  <option value="terminee">Termin&#xe9;e</option>
-              </select>
-          </div>
-
-          <div class="form-group">
-              <label for="comments">Commentaires:</label>
-              <textarea id="comments" class="comment-field" placeholder="Ajoutez vos commentaires ici..."></textarea>
-          </div>
-
-          <div class="capture-section">
-              <label>Photos/Vid&#xe9;os de l&apos;Intervention:</label>
-              <input type="file" id="mediaCapture" accept="image/*,video/*" multiple>
-              <div id="preview"></div>
-          </div>
-
-          <div class="form-group">
-              <table class="summary-table">
-                  <caption>R&#xe9;capitulatif de l&apos;Intervention</caption>
-                  <tr>
-                      <th>Champ</th>
-                      <th>S&#xe9;lection</th>
-                  </tr>
-                  <tbody id="summaryTableBody">
-                  </tbody>
-              </table>
-              <button type="button" id="exportExcel" style="margin-top: 10px; background-color: #28a745;">Exporter en Excel</button>
-          </div>
-
-          <button type="submit">Soumettre le Rapport</button>
-      </form>
-  </div>
-
+    <button type="submit">Soumettre le Rapport</button>
+  
+</form>
+</div>
+  
   <script>window.jsPDF = window.jspdf.jsPDF;
 let problemTypeHistory = [];
 let interventionTypeHistory = [];
