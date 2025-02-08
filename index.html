@@ -1,4 +1,6 @@
-<html><head><base href="https://example.com/">
+<html>
+<head>
+  <base href="https://example.com/">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Formulaire d'Intervention Technique</title>
@@ -179,17 +181,16 @@
       }
   </style>
   <script type="module">
-      // Importer les services Firebase nécessaires
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-      import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+      import { getFirestore, collection, addDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-      // 🔹 Configuration Firebase avec l’emplacement correct
+      // 🔹 Configuration Firebase 
       const firebaseConfig = {
           apiKey: "AIzaSyDF13i8rEL6fCGzBJgJ2i90ZeCoa4m0QE8",
           authDomain: "rapport-tech.firebaseapp.com",
           projectId: "rapport-tech",
           storageBucket: "rapport-tech.appspot.com",
-          databaseURL: "https://rapport-tech-default-rtdb.nam5.firebasedatabase.app", // 🔹 Ajout de l'URL correcte
+          databaseURL: "https://rapport-tech-default-rtdb.nam5.firebasedatabase.app",
           messagingSenderId: "809720609386",
           appId: "1:809720609386:web:b4308319b85f288d09e813",
           measurementId: "G-7G2Q57VHRT"
@@ -234,9 +235,12 @@
         document.getElementById("submitToDatabase").addEventListener("click", async function(event) {
           event.preventDefault(); // Empêche le rechargement de la page
 
+          const technicianName = document.getElementById("technicianName").value;
+          const submissionDate = new Date().toISOString().split('T')[0]; // Format YYYY-MM-DD
+          
           try {
-            await addDoc(collection(db, "interventionReports"), {
-              technicianName: document.getElementById("technicianName").value,
+            const reportData = {
+              technicianName: technicianName,
               dateTime: document.getElementById("dateTimeInput").value,
               location: document.getElementById("locationInput").value,
               interventionType: document.getElementById("interventionType").value,
@@ -245,8 +249,13 @@
               interventionStatus: document.getElementById("interventionStatus").value,
               projectName: document.getElementById("projectName").value,
               comments: document.getElementById("comments").value || "Pas de commentaire",
-              timestamp: new Date() // Ajout d'un timestamp pour Firestore
-            });
+              timestamp: new Date(), // Timestamp complet
+              submissionDate: submissionDate // Nouvelle propriété pour la date de soumission
+            };
+
+            // Utiliser le nom du technicien et la date de soumission comme partie du chemin de la collection
+            const technicianReportsRef = collection(db, "technicianReports", `${technicianName}_${submissionDate}`, "interventions");
+            await addDoc(technicianReportsRef, reportData);
 
             alert("Data was sent successfully !");
             document.getElementById("technicianForm").reset(); // Réinitialiser le formulaire après envoi
@@ -372,8 +381,8 @@
         </div>
 
         <div class="form-actions">
-          <button type="button" id="generatePDF">Exporter en PDF</button>
-          <button type="button" id="submitToDatabase" style="margin-top: 10px; background-color: #f50505;">Send to DB TIS</button>
+          <button type="button" id="generatePDF">Générer PDF</button>
+          <button type="button" id="submitToDatabase" style="margin-top: 10px; background-color: #f50505;">Send to TIS DB</button>
         </div>
     </form>
   </div>
