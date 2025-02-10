@@ -181,90 +181,82 @@
       }
   </style>
   <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-      import { getFirestore, collection, addDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-      // 🔹 Configuration Firebase 
-      const firebaseConfig = {
-          apiKey: "AIzaSyDF13i8rEL6fCGzBJgJ2i90ZeCoa4m0QE8",
-          authDomain: "rapport-tech.firebaseapp.com",
-          projectId: "rapport-tech",
-          storageBucket: "rapport-tech.appspot.com",
-          databaseURL: "https://rapport-tech-default-rtdb.nam5.firebasedatabase.app",
-          messagingSenderId: "809720609386",
-          appId: "1:809720609386:web:b4308319b85f288d09e813",
-          measurementId: "G-7G2Q57VHRT"
-      };
+    // 🔹 Configuration Firebase 
+    const firebaseConfig = {
+      apiKey: "AIzaSyDF13i8rEL6fCGzBJgJ2i90ZeCoa4m0QE8",
+      authDomain: "rapport-tech.firebaseapp.com",
+      projectId: "rapport-tech",
+      storageBucket: "rapport-tech.appspot.com",
+      databaseURL: "https://rapport-tech-default-rtdb.nam5.firebasedatabase.app",
+      messagingSenderId: "809720609386",
+      appId: "1:809720609386:web:b4308319b85f288d09e813",
+      measurementId: "G-7G2Q57VHRT"
+    };
 
-      // Initialisation de Firebase et Firestore
-      const app = initializeApp(firebaseConfig);
-      const db = getFirestore(app);
+    // Initialisation de Firebase et Firestore
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-      // Fonction pour récupérer la date et l'heure actuelle
-      function updateDateTime() {
-          const now = new Date();
-          const formattedDateTime = now.toLocaleString("fr-FR");
-          document.getElementById("datetime").textContent = formattedDateTime;
-          document.getElementById("dateTimeInput").value = now.toISOString();
-      }
+    // Existing code with modifications to include intervention and problem type histories
+    document.addEventListener("DOMContentLoaded", function() {
+      document.getElementById("submitToDatabase").addEventListener("click", async function(event) {
+        event.preventDefault(); // Empêche le rechargement de la page
 
-      // Mettre à jour la date et l'heure à l'affichage
-      document.addEventListener("DOMContentLoaded", updateDateTime);
-
-      // Fonction pour récupérer la localisation
-      function getLocation() {
-          if (navigator.geolocation) {
-              navigator.geolocation.getCurrentPosition(
-                  (position) => {
-                      const coords = `Lat: ${position.coords.latitude}, Long: ${position.coords.longitude}`;
-                      document.getElementById("location").textContent = coords;
-                      document.getElementById("locationInput").value = coords;
-                  },
-                  (error) => {
-                      document.getElementById("location").textContent = "Localisation indisponible";
-                  }
-              );
-          }
-      }
-
-      // Obtenir la localisation à l'affichage
-      document.addEventListener("DOMContentLoaded", getLocation);
-
-      // Fonction pour envoyer le formulaire vers Firestore
-      document.addEventListener("DOMContentLoaded", function() {
-        document.getElementById("submitToDatabase").addEventListener("click", async function(event) {
-          event.preventDefault(); // Empêche le rechargement de la page
-
-          const technicianName = document.getElementById("technicianName").value;
-          const submissionDate = new Date().toISOString().split('T')[0]; // Format YYYY-MM-DD
+        const technicianName = document.getElementById("technicianName").value;
+        const submissionDate = new Date().toISOString().split('T')[0]; // Format YYYY-MM-DD
+        
+        // Collect data from summary table
+        const summaryTable = document.getElementById('summaryTableBody');
+        const summaryRows = Array.from(summaryTable.querySelectorAll('tr'));
+        
+        // Create an object to store report data
+        const reportData = {};
+        
+        // Iterate through summary rows and populate reportData
+        summaryRows.forEach(row => {
+          const [field, value] = row.querySelectorAll('td');
+          const key = field.textContent.toLowerCase()
+            .replace(/\s+/g, '_')
+            .replace(/[()]/g, '')
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '');
           
-          try {
-            const reportData = {
-              technicianName: technicianName,
-              dateTime: document.getElementById("dateTimeInput").value,
-              location: document.getElementById("locationInput").value,
-              interventionType: document.getElementById("interventionType").value,
-              problemType: document.getElementById("problemType").value,
-              status: document.querySelector("input[name='status']:checked").value,
-              interventionStatus: document.getElementById("interventionStatus").value,
-              projectName: document.getElementById("projectName").value,
-              comments: document.getElementById("comments").value || "Pas de commentaire",
-              timestamp: new Date(), // Timestamp complet
-              submissionDate: submissionDate // Nouvelle propriété pour la date de soumission
-            };
-
-            // Utiliser le nom du technicien et la date de soumission comme partie du chemin de la collection
-            const technicianReportsRef = collection(db, "technicianReports", `${technicianName}_${submissionDate}`, "interventions");
-            await addDoc(technicianReportsRef, reportData);
-
-            alert("Data was sent successfully !");
-            document.getElementById("technicianForm").reset(); // Réinitialiser le formulaire après envoi
-          } catch (error) {
-            console.error("Erreur lors de l'envoi :", error);
-            alert("Erreur lors de l'envoi du rapport !");
-          }
+          reportData[key] = value.textContent;
         });
+
+        // Add additional metadata and histories
+        reportData.timestamp = new Date();
+        reportData.submission_date = submissionDate;
+        reportData.intervention_type_history = interventionTypeHistory.map(h => ({
+          type: h.text,
+          timestamp: h.timestamp
+        }));
+        reportData.problem_type_history = problemTypeHistory.map(h => ({
+          value: h.value,
+          text: h.text,
+          timestamp: h.timestamp
+        }));
+
+        try {
+          // Utiliser le nom du technicien et la date de soumission comme partie du chemin de la collection
+          const technicianReportsRef = collection(db, "technicianReports", `${technicianName}_${submissionDate}`, "interventions");
+          await addDoc(technicianReportsRef, reportData);
+
+          alert("Data was sent successfully !");
+          document.getElementById("technicianForm").reset(); // Réinitialiser le formulaire après envoi
+          
+          // Réinitialiser les historiques après l'envoi
+          interventionTypeHistory = [];
+          problemTypeHistory = [];
+        } catch (error) {
+          console.error("Erreur lors de l'envoi :", error);
+          alert("Erreur lors de l'envoi du rapport !");
+        }
       });
+    });
   </script>
 </head>
 <body>
