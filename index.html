@@ -231,7 +231,8 @@
         reportData.timestamp = new Date();
         reportData.submission_date = submissionDate;
         reportData.intervention_type_history = interventionTypeHistory.map(h => ({
-          type: h.text,
+          type: h.type,
+          text: h.text,
           timestamp: h.timestamp
         }));
         reportData.problem_type_history = problemTypeHistory.map(h => ({
@@ -245,7 +246,7 @@
           const technicianReportsRef = collection(db, "technicianReports", `${technicianName}_${submissionDate}`, "interventions");
           await addDoc(technicianReportsRef, reportData);
 
-          alert("Data was sent successfully !");
+          alert("Rapport soumis avec succès !");
           document.getElementById("technicianForm").reset(); // Réinitialiser le formulaire après envoi
           
           // Réinitialiser les historiques après l'envoi
@@ -262,10 +263,6 @@
 <body>
   <div class="form-container">
     <h1>Rapport d'Intervention Technique</h1>
-    <div class="form-group">
-        <label for="projectName">Nom du Projet/Client:</label>
-        <input type="text" id="projectName" required>
-    </div>
     <form id="technicianForm">
         <div class="form-group">
             <label for="technicianName">Nom du Technicien:</label>
@@ -284,6 +281,11 @@
             </select>
         </div>
     
+        <div class="form-group">
+          <label for="projectName">Nom du Projet/Client:</label>
+          <input type="text" id="projectName" name="projectName" required>
+      </div>
+
         <div class="form-group">
             <label>Date et Heure:</label>
             <div id="datetime"></div>
@@ -312,7 +314,7 @@
     
         <div class="form-group">
           <label>Nature du Problème:</label>
-          <select id="problemType" required>
+          <select id="problemType" name="natureProbleme" required>
               <option value>Sélectionnez le problème</option>
           </select>
         </div>
@@ -373,8 +375,8 @@
         </div>
 
         <div class="form-actions">
-          <button type="button" id="generatePDF">Générer PDF</button>
-          <button type="button" id="submitToDatabase" style="margin-top: 10px; background-color: #f50505;">Send to TIS DB</button>
+          <button type="submit" id="submitTogooglesheet">Send to google sheet</button>
+          <button type="button" id="submitToDatabase" style="margin-top: 10px; background-color: #fc0303;">Send to TIS DB</button>
         </div>
     </form>
   </div>
@@ -761,5 +763,32 @@
         updateSummaryTable();
       });
   </script>
+</body>
+</html>
+
+  <script>
+    document.getElementById("technicianForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+  
+        document.getElementById("submitTogooglesheet").innerText = "Envoi en cours...";
+  
+        let formData = new FormData(technicianForm);
+  
+        fetch("https://script.google.com/macros/s/AKfycbxhCQVYPZrZu8JS0EtYO9hsXnL1yLbWKso5jEuNXtxvFjPv3RnTHfsFA6fLFygE3z-6jw/exec", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            alert("Données envoyées avec succès !");
+            document.getElementById("submitTogooglesheet").innerText = "send to google sheet";
+        })
+        .catch(error => {
+            alert("Erreur lors de l'envoi des données.");
+            document.getElementById("submitTogooglesheet").innerText = "Try again";
+        });
+    });
+  </script>
+  
 </body>
 </html>
