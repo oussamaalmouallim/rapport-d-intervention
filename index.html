@@ -1,4 +1,5 @@
 <html>
+
 <head>
   <base href="https://example.com/">
   <meta charset="UTF-8">
@@ -7,182 +8,210 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
   <style>
-      body {
-          font-family: 'Segoe UI', sans-serif;
-          max-width: 800px;
-          margin: 20px auto;
-          padding: 20px;
-          background-color: #f5f5f5;
-      }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
 
-      .form-container {
-          background: white;
-          padding: 30px;
-          border-radius: 10px;
-          box-shadow: 0 0 15px rgba(0,0,0,0.1);
-      }
+    .form-container {
+      background: url('https://www.ecoview.ae/wp-content/uploads/2022/02/TIS-LOGO-e1646026001988_01e0013b0.png') no-repeat;
+      background-size: 20%;
+      background-position: top right;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
 
-      .form-group {
-          margin-bottom: 20px;
-      }
+    .form-group {
+      margin-bottom: 20px;
+    }
 
-      label {
-          display: block;
-          margin-bottom: 8px;
-          font-weight: bold;
-          color: #333;
-      }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #333;
+    }
 
-      input[type="text"],
-      select,
-      textarea {
-          width: 100%;
-          padding: 10px;
-          border: 1px solid #ddd;
-          border-radius: 5px;
-          margin-bottom: 10px;
-      }
+    input[type="text"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
 
-      .radio-group {
-          display: flex;
-          gap: 15px;
-          flex-wrap: wrap;
-      }
+    .radio-group {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
 
-      .radio-option {
-          display: flex;
-          align-items: center;
-          gap: 5px;
-      }
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
 
-      button {
-          background-color: #007bff;
-          color: white;
-          padding: 12px 20px;
-          border: none;
-          border-radius: 5px;
-          cursor: pointer;
-          font-size: 16px;
-          transition: background-color 0.3s;
-      }
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
 
-      button:hover {
-          background-color: #0056b3;
-      }
+    button:hover {
+      background-color: #0056b3;
+    }
 
-      .capture-section {
-          border: 2px dashed #ccc;
-          padding: 20px;
-          border-radius: 5px;
-          margin: 20px 0;
-          text-align: center;
-      }
+    .capture-section {
+      border: 2px dashed #ccc;
+      padding: 20px;
+      border-radius: 5px;
+      margin: 20px 0;
+      text-align: center;
+    }
 
-      .recording-controls {
-          display: flex;
-          gap: 10px;
-          justify-content: center;
-          margin: 20px 0;
-      }
+    .recording-controls {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin: 20px 0;
+    }
 
-      #location {
-          background: #f8f9fa;
-          padding: 10px;
-          border-radius: 5px;
-          margin: 10px 0;
-      }
+    #location {
+      background: #f8f9fa;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 10px 0;
+    }
 
-      #datetime {
-          font-weight: bold;
-          color: #0056b3;
-      }
+    #datetime {
+      font-weight: bold;
+      color: #0056b3;
+    }
 
-      .location-details {
-          margin-top: 10px;
-          font-size: 14px;
-          color: #666;
-      }
+    .location-details {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #666;
+    }
 
-      .response-tag {
-          background-color: #e9ecef;
-          padding: 8px 12px;
-          border-radius: 4px;
-          margin: 5px 0;
-          display: inline-block;
-          font-size: 0.9em;
-          color: #495057;
-          margin-top: 5px;
-      }
+    .response-tag {
+      background-color: #e9ecef;
+      padding: 8px 12px;
+      border-radius: 4px;
+      margin: 5px 0;
+      display: inline-block;
+      font-size: 0.9em;
+      color: #495057;
+      margin-top: 5px;
+    }
 
-      .summary-table {
-          width: 100%;
-          margin: 20px 0;
-          border-collapse: collapse;
-          background: white;
-      }
+    .summary-table {
+      width: 100%;
+      margin: 20px 0;
+      border-collapse: collapse;
+      background: white;
+    }
 
-      .summary-table th, .summary-table td {
-          padding: 10px;
-          border: 1px solid #ddd;
-          text-align: left;
-      }
+    .summary-table th,
+    .summary-table td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
 
-      .summary-table th {
-          background-color: #f8f9fa;
-          font-weight: bold;
-      }
+    .summary-table th {
+      background-color: #f8f9fa;
+      font-weight: bold;
+    }
 
-      .summary-table caption {
-          font-weight: bold;
-          padding: 10px;
-          background-color: #007bff;
-          color: white;
-          caption-side: top;
-      }
-      
-      .comment-field {
-          width: 100%;
-          min-height: 100px;
-          padding: 10px;
-          border: 1px solid #ddd;
-          border-radius: 5px;
-          margin: 10px 0;
-          resize: vertical;
-      }
+    .summary-table caption {
+      font-weight: bold;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      caption-side: top;
+    }
 
-      .status-select {
-          background-color: #fff;
-          padding: 8px;
-          border-radius: 4px;
-          border: 1px solid #ddd;
-          width: 100%;
-      }
-      .preview-item {
-          display: inline-block;
-          position: relative;
-          margin: 10px;
-      }
+    .comment-field {
+      width: 100%;
+      min-height: 100px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin: 10px 0;
+      resize: vertical;
+    }
 
-      .delete-btn {
-          position: absolute;
-          top: -10px;
-          right: -10px;
-          background: red;
-          color: white;
-          border: none;
-          border-radius: 50%;
-          width: 20px;
-          height: 20px;
-          line-height: 20px;
-          text-align: center;
-          cursor: pointer;
-          font-size: 12px;
-          padding: 0;
-      }
+    .status-select {
+      background-color: #fff;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+      width: 100%;
+    }
+
+    .preview-item {
+      display: inline-block;
+      position: relative;
+      margin: 10px;
+    }
+
+    .delete-btn {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      line-height: 20px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 12px;
+      padding: 0;
+    }
+
+    /* Style pour le champ Date de Soumission */
+    #submissionDate {
+      background-color: #e9f7ff;
+      border: 1px solid #a0d2eb;
+      border-radius: 8px;
+      padding: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+    }
+
+    #submissionDate:focus {
+      border-color: #4db6ac;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+      outline: none;
+    }
   </style>
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import {
+      initializeApp
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      doc,
+      setDoc
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     // 🔹 Configuration Firebase 
     const firebaseConfig = {
@@ -206,15 +235,15 @@
         event.preventDefault(); // Empêche le rechargement de la page
 
         const technicianName = document.getElementById("technicianName").value;
-        const submissionDate = new Date().toISOString().split('T')[0]; // Format YYYY-MM-DD
-        
+        const submissionDate = document.getElementById("submissionDate").value;
+
         // Collect data from summary table
         const summaryTable = document.getElementById('summaryTableBody');
         const summaryRows = Array.from(summaryTable.querySelectorAll('tr'));
-        
+
         // Create an object to store report data
         const reportData = {};
-        
+
         // Iterate through summary rows and populate reportData
         summaryRows.forEach(row => {
           const [field, value] = row.querySelectorAll('td');
@@ -223,23 +252,9 @@
             .replace(/[()]/g, '')
             .normalize('NFD')
             .replace(/[\u0300-\u036f]/g, '');
-          
+
           reportData[key] = value.textContent;
         });
-
-        // Add additional metadata and histories
-        reportData.timestamp = new Date();
-        reportData.submission_date = submissionDate;
-        reportData.intervention_type_history = interventionTypeHistory.map(h => ({
-          type: h.type,
-          text: h.text,
-          timestamp: h.timestamp
-        }));
-        reportData.problem_type_history = problemTypeHistory.map(h => ({
-          value: h.value,
-          text: h.text,
-          timestamp: h.timestamp
-        }));
 
         try {
           // Utiliser le nom du technicien et la date de soumission comme partie du chemin de la collection
@@ -247,548 +262,376 @@
           await addDoc(technicianReportsRef, reportData);
 
           alert("Rapport soumis avec succès !");
-          document.getElementById("technicianForm").reset(); // Réinitialiser le formulaire après envoi
-          
+          document.getElementById("submitToDatabase").innerText = "sent to us thank you !";
+
           // Réinitialiser les historiques après l'envoi
           interventionTypeHistory = [];
           problemTypeHistory = [];
         } catch (error) {
           console.error("Erreur lors de l'envoi :", error);
           alert("Erreur lors de l'envoi du rapport !");
+          document.getElementById("submitToDatabase").innerText = "Try again";
         }
       });
     });
   </script>
 </head>
+
 <body>
   <div class="form-container">
     <h1>Rapport d'Intervention Technique</h1>
     <form id="technicianForm">
-        <div class="form-group">
-            <label for="technicianName">Nom du Technicien:</label>
-            <select id="technicianName" name="technicianName" required>
-                <option value="">Sélectionnez un technicien</option>
-                <option value="DRISS">DRISS</option>
-                <option value="BRAHIM">BRAHIM</option>
-                <option value="MOUSSTAFA">MOUSSTAFA</option>
-                <option value="YOUSSEF">YOUSSEF</option>
-                <option value="ACHRAF">ACHRAF</option>
-                <option value="AYMEN">AYMEN</option>
-                <option value="REDA">REDA</option>
-                <option value="ABDERAHMAN">ABDERAHMAN</option>
-                <option value="NOURDINE">NOURDINE</option>
-                <option value="autre">Autre</option>
-            </select>
-        </div>
-    
-        <div class="form-group">
-          <label for="projectName">Nom du Projet/Client:</label>
-          <input type="text" id="projectName" name="projectName" required>
+      <div class="form-group">
+        <label for="technicianName">Nom du Technicien:</label>
+        <select id="technicianName" name="technicianName" required>
+          <option value="">Sélectionnez un technicien</option>
+          <option value="DRISS">DRISS</option>
+          <option value="BRAHIM">BRAHIM</option>
+          <option value="MOUSSTAFA">MOUSSTAFA</option>
+          <option value="YOUSSEF">YOUSSEF</option>
+          <option value="ACHRAF">ACHRAF</option>
+          <option value="AYMEN">AYMEN</option>
+          <option value="REDA">REDA</option>
+          <option value="ABDERAHMAN">ABDERAHMAN</option>
+          <option value="NOURDINE">NOURDINE</option>
+          <option value="autre">Autre</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="submissionDate">Date de Soumission:</label>
+        <input type="date" id="submissionDate" name="submissionDate" required>
       </div>
 
-        <div class="form-group">
-            <label>Date et Heure:</label>
-            <div id="datetime"></div>
-            <input type="hidden" name="dateTime" id="dateTimeInput">
-        </div>
-    
-        <div class="form-group">
-            <label>Localisation:</label>
-            <div id="location">Recherche de la position...</div>
-            <input type="hidden" name="location" id="locationInput">
-        </div>
-    
-        <div class="form-group">
-            <label>Type d'Intervention:</label>
-            <select id="interventionType" name="interventionType" required>
-                <option value="">Sélectionnez le type</option>
-                <option value="electricite">Électricité</option>
-                <option value="domotique">Programmation (Domotique)</option>
-                <option value="climatisation">Climatisation</option>
-                <option value="sonorisation">Sonorisation</option>
-                <option value="videophone">Vidéophone</option>
-                <option value="supervision">Supervision</option>
-                <option value="autre">Autre</option>
-            </select>
-        </div>
-    
-        <div class="form-group">
-          <label>Nature du Problème:</label>
-          <select id="problemType" name="natureProbleme" required>
-              <option value>Sélectionnez le problème</option>
-          </select>
-        </div>
+      <div class="form-group">
+        <label for="projectName">Nom du Projet/Client:</label>
+        <input type="text" id="projectName" name="projectName" required>
+      </div>
 
-        <div class="form-group">
-            <label>État de l'Intervention:</label>
-            <div class="radio-group">
-                <div class="radio-option">
-                    <input type="radio" id="repare" name="status" value="repare" required>
-                    <label for="repare">Réparé</label>
-                </div>
-                <div class="radio-option">
-                    <input type="radio" id="remplacement" name="status" value="remplacement">
-                    <label for="remplacement">Remplacement de pièce</label>
-                </div>
-                <div class="radio-option">
-                    <input type="radio" id="maintenance" name="status" value="maintenance">
-                    <label for="maintenance">Maintenance préventive</label>
-                </div>
-                <div class="radio-option">
-                    <input type="radio" id="autre" name="status" value="autre">
-                    <label for="autre">Autre</label>
-                </div>
-            </div>
-        </div>
-    
+      <div class="form-group">
+        <label>Date et Heure:</label>
+        <div id="datetime"></div>
+        <input type="hidden" name="dateTime" id="dateTimeInput">
+      </div>
 
-        <div class="form-group">
-            <label for="interventionStatus">Statut de l'intervention:</label>
-            <select id="interventionStatus" name="interventionStatus" required>
-                <option value="">Sélectionnez le statut</option>
-                <option value="en_cours">En cours</option>
-                <option value="terminee">Terminée</option>
-            </select>
-        </div>
-    
-        <div class="form-group">
-            <label for="comments">Commentaires:</label>
-            <textarea id="comments" name="comments" placeholder="Ajoutez vos commentaires ici..."></textarea>
-        </div>
-        <div class="capture-section">
-          <label>Photos/Vidéos de l'Intervention:</label>
-          <input type="file" id="mediaCapture" accept="image/*,video/*" multiple>
-          <div id="preview"></div>
-        </div>
+      <div class="form-group">
+        <label>Localisation:</label>
+        <div id="location">Recherche de la position...</div>
+        <input type="hidden" name="location" id="locationInput">
+      </div>
 
-        <div class="form-group">
-            <table class="summary-table">
-                <caption>Récapitulatif de l'Intervention</caption>
-                <tr>
-                    <th>Champ</th>
-                    <th>Sélection</th>
-                </tr>
-                <tbody id="summaryTableBody">
-                </tbody>
-            </table>
-            <button type="button" id="exportExcel" style="margin-top: 10px; background-color: #28a745;">Exporter en Excel</button>
-        </div>
+      <div class="form-group">
+        <label>Type d'Intervention:</label>
+        <select id="interventionType" name="interventionType" required>
+          <option value="">Sélectionnez le type</option>
+          <option value="electricite">Électricité</option>
+          <option value="domotique">Programmation (Domotique)</option>
+          <option value="climatisation">Climatisation</option>
+          <option value="sonorisation">Sonorisation</option>
+          <option value="videophone">Vidéophone</option>
+          <option value="supervision">Supervision</option>
+          <option value="autre">Autre</option>
+        </select>
+      </div>
 
-        <div class="form-actions">
-          <button type="submit" id="submitTogooglesheet">Send to google sheet</button>
-          <button type="button" id="submitToDatabase" style="margin-top: 10px; background-color: #fc0303;">Send to TIS DB</button>
+      <div class="form-group">
+        <label>Nature du Problème:</label>
+        <select id="problemType" name="natureProbleme" required>
+          <option value>Sélectionnez le problème</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>État de l'Intervention:</label>
+        <div class="radio-group">
+          <div class="radio-option">
+            <input type="radio" id="repare" name="status" value="repare" required>
+            <label for="repare">Réparé</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" id="remplacement" name="status" value="remplacement">
+            <label for="remplacement">Remplacement de pièce</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" id="maintenance" name="status" value="maintenance">
+            <label for="maintenance">Maintenance préventive</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" id="autre" name="status" value="autre">
+            <label for="autre">Autre</label>
+          </div>
         </div>
+      </div>
+
+      <div class="form-group">
+        <label for="interventionStatus">Statut de l'intervention:</label>
+        <select id="interventionStatus" name="interventionStatus" required>
+          <option value="">Sélectionnez le statut</option>
+          <option value="en_cours">En cours</option>
+          <option value="terminee">Terminée</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="comments">Commentaires:</label>
+        <textarea id="comments" name="comments" placeholder="Ajoutez vos commentaires ici..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <table class="summary-table">
+          <caption>Récapitulatif de l'Intervention</caption>
+          <tr>
+            <th>Champ</th>
+            <th>Sélection</th>
+          </tr>
+          <tbody id="summaryTableBody">
+          </tbody>
+        </table>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" id="submitTogooglesheet"style="margin-top: 10px; background-color: #36a502;">Send to Google Sheet</button>
+        <button type="button" id="submitToDatabase" style="margin-top: 10px; background-color: #f00c0c;">Send to TIS DB</button>
+      </div>
     </form>
   </div>
-  
+
   <script>
-      window.jsPDF = window.jspdf.jsPDF;
-      let problemTypeHistory = [];
-      let interventionTypeHistory = [];
-      function updateDateTime() {
-        const now = new Date();
-        document.getElementById('datetime').textContent = now.toLocaleString('fr-FR');
+    window.jsPDF = window.jspdf.jsPDF;
+    let problemTypeHistory = [];
+    let interventionTypeHistory = [];
+
+    function updateDateTime() {
+      const now = new Date();
+      document.getElementById('datetime').textContent = now.toLocaleString('fr-FR');
+    }
+    setInterval(updateDateTime, 1000);
+    updateDateTime();
+    async function getLocationDetails(latitude, longitude) {
+      try {
+        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`, {
+          headers: {
+            'Accept-Language': 'fr'
+          }
+        });
+        if (!response.ok) throw new Error('Erreur réseau');
+        const data = await response.json();
+        return data.display_name;
+      } catch (error) {
+        console.error('Erreur lors de la récupération de l\'adresse:', error);
+        return null;
       }
-      setInterval(updateDateTime, 1000);
-      updateDateTime();
-      async function getLocationDetails(latitude, longitude) {
-        try {
-          const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`, {
-            headers: {
-              'Accept-Language': 'fr'
-            }
+    }
+    async function updateLocation() {
+      const locationDiv = document.getElementById('location');
+      try {
+        locationDiv.textContent = 'Recherche de la position...';
+        const position = await new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject, {
+            enableHighAccuracy: true,
+            timeout: 3000,
+            maximumAge: 0
           });
-          if (!response.ok) throw new Error('Erreur réseau');
-          const data = await response.json();
-          return data.display_name;
-        } catch (error) {
-          console.error('Erreur lors de la récupération de l\'adresse:', error);
-          return null;
-        }
-      }
-      async function updateLocation() {
-        const locationDiv = document.getElementById('location');
-        try {
-          locationDiv.textContent = 'Recherche de la position...';
-          const position = await new Promise((resolve, reject) => {
-            navigator.geolocation.getCurrentPosition(resolve, reject, {
-              enableHighAccuracy: true,
-              timeout: 3000,
-              maximumAge: 0
-            });
-          });
-          const {
-            latitude,
-            longitude
-          } = position.coords;
-          locationDiv.innerHTML = `
+        });
+        const {
+          latitude,
+          longitude
+        } = position.coords;
+        locationDiv.innerHTML = `
                   <div>Coordonnées trouvées</div>
                   <div class="location-details">
                     Latitude: ${latitude.toFixed(6)}<br>
                     Longitude: ${longitude.toFixed(6)}
                   </div>
                 `;
-          const address = await getLocationDetails(latitude, longitude);
-          if (address) {
-            locationDiv.innerHTML = `
+        const address = await getLocationDetails(latitude, longitude);
+        if (address) {
+          locationDiv.innerHTML = `
                     <div>${address}</div>
                     <div class="location-details">
                       Latitude: ${latitude.toFixed(6)}<br>
                       Longitude: ${longitude.toFixed(6)}
                     </div>
                   `;
-          }
-        } catch (error) {
-          locationDiv.textContent = `Erreur de localisation: ${error.message}`;
         }
+      } catch (error) {
+        locationDiv.textContent = `Erreur de localisation: ${error.message}`;
       }
-      updateLocation();
-      setInterval(() => {
-        if (document.getElementById('location').textContent.includes('Erreur') || document.getElementById('location').textContent.includes('Recherche')) {
-          updateLocation();
-        }
-      }, 30000);
-      if (navigator.geolocation) {}
-      document.getElementById('mediaCapture').addEventListener('change', function (e) {
-        const preview = document.getElementById('preview');
-        preview.innerHTML = '';
-        [...e.target.files].forEach(file => {
-          const reader = new FileReader();
-          reader.onload = function (e) {
-            const previewItem = document.createElement('div');
-            previewItem.className = 'preview-item';
-            if (file.type.startsWith('image/')) {
-              const img = document.createElement('img');
-              img.src = e.target.result;
-              img.style.maxWidth = '200px';
-              previewItem.appendChild(img);
-            } else if (file.type.startsWith('video/')) {
-              const video = document.createElement('video');
-              video.src = e.target.result;
-              video.controls = true;
-              video.style.maxWidth = '200px';
-              previewItem.appendChild(video);
-            }
-            const deleteBtn = document.createElement('button');
-            deleteBtn.className = 'delete-btn';
-            deleteBtn.innerHTML = '×';
-            deleteBtn.onclick = function () {
-              previewItem.remove();
-            };
-            previewItem.appendChild(deleteBtn);
-            preview.appendChild(previewItem);
-          };
-          reader.readAsDataURL(file);
+    }
+    updateLocation();
+    setInterval(() => {
+      if (document.getElementById('location').textContent.includes('Erreur') || document.getElementById('location').textContent.includes('Recherche')) {
+        updateLocation();
+      }
+    }, 30000);
+    if (navigator.geolocation) {}
+    let mediaRecorder;
+    let audioChunks = [];
+    document.getElementById('interventionType').addEventListener('change', function() {
+      const problemType = document.getElementById('problemType');
+      const responseTags = problemType.parentNode.querySelectorAll('.response-tag');
+      responseTags.forEach(tag => tag.remove());
+      problemType.innerHTML = '<option value="">Sélectionnez le problème</option>';
+      const problems = {
+        'electricite': ['Pannes de courant', 'Problèmes de câblage', 'Prises défectueuses', 'Éclairage défaillant', 'Autre'],
+        'domotique': ['Problèmes de connectivité', 'Bugs logiciels', 'Erreurs de configuration', 'Mises à jour manquantes', 'Incompatibilité des appareils', 'Configuration point d\'accès', 'Autre'],
+        'climatisation': ['Insuffisance de refroidissement', 'Problèmes de thermostat', 'Bruits inhabituels', 'Autre'],
+        'sonorisation': ['Problèmes de connectivité', 'Qualité sonore dégradée', 'Défaillance des amplificateurs', 'Pannes des haut-parleurs', 'Autre'],
+        'videophone': ['Problèmes de connexion réseau', 'Problèmes d\'alimentation', 'Qualité vidéo ou audio dégradée', 'Bouton d\'appel défectueux', 'Problèmes de synchronisation', 'Installation', 'Configuration', 'Autre'],
+        'supervision': ['Problèmes de connectivité', 'Erreurs système', 'Problèmes d\'affichage', 'Erreurs de données', 'Autre'],
+        'autre': ['Autre']
+      };
+      const selectedType = this.value;
+      if (selectedType) {
+        interventionTypeHistory.push({
+          type: selectedType,
+          text: this.options[this.selectedIndex].text,
+          timestamp: new Date()
         });
-      });
-      let mediaRecorder;
-      let audioChunks = [];
-      document.getElementById('interventionType').addEventListener('change', function () {
-        const problemType = document.getElementById('problemType');
-        const responseTags = problemType.parentNode.querySelectorAll('.response-tag');
-        responseTags.forEach(tag => tag.remove());
-        problemType.innerHTML = '<option value="">Sélectionnez le problème</option>';
-        const problems = {
-          'electricite': ['Pannes de courant', 'Problèmes de câblage', 'Prises défectueuses', 'Éclairage défaillant', 'Autre'],
-          'domotique': ['Problèmes de connectivité', 'Bugs logiciels', 'Erreurs de configuration', 'Mises à jour manquantes', 'Incompatibilité des appareils', 'Configuration point d\'accès', 'Autre'],
-          'climatisation': ['Insuffisance de refroidissement', 'Problèmes de thermostat', 'Bruits inhabituels', 'Autre'],
-          'sonorisation': ['Problèmes de connectivité', 'Qualité sonore dégradée', 'Défaillance des amplificateurs', 'Pannes des haut-parleurs', 'Autre'],
-          'videophone': ['Problèmes de connexion réseau', 'Problèmes d\'alimentation', 'Qualité vidéo ou audio dégradée', 'Bouton d\'appel défectueux', 'Problèmes de synchronisation', 'Installation', 'Configuration', 'Autre'],
-          'supervision': ['Problèmes de connectivité', 'Erreurs système', 'Problèmes d\'affichage', 'Erreurs de données', 'Autre'],
-          'autre': ['Autre']
-        };
-        const selectedType = this.value;
-        if (selectedType) {
-          interventionTypeHistory.push({
-            type: selectedType,
-            text: this.options[this.selectedIndex].text,
-            timestamp: new Date()
-          });
-        }
-        if (selectedType && problems[selectedType]) {
-          problems[selectedType].forEach(problem => {
-            const option = document.createElement('option');
-            option.value = problem.toLowerCase().replace(/\s+/g, '_');
-            option.textContent = problem;
-            problemType.appendChild(option);
-          });
-          const selectedTypeText = this.options[this.selectedIndex].text;
-          const responseTag = document.createElement('div');
-          responseTag.className = 'response-tag';
-          responseTag.textContent = selectedTypeText;
-          this.parentNode.appendChild(responseTag);
-        }
-      });
-      document.getElementById('problemType').addEventListener('change', function (e) {
-        if (this.value) {
-          problemTypeHistory.push({
-            value: this.value,
-            text: this.options[this.selectedIndex].text,
-            timestamp: new Date()
-          });
-        }
+      }
+      if (selectedType && problems[selectedType]) {
+        problems[selectedType].forEach(problem => {
+          const option = document.createElement('option');
+          option.value = problem.toLowerCase().replace(/\s+/g, '_');
+          option.textContent = problem;
+          problemType.appendChild(option);
+        });
+        const selectedTypeText = this.options[this.selectedIndex].text;
         const responseTag = document.createElement('div');
         responseTag.className = 'response-tag';
-        responseTag.textContent = this.options[this.selectedIndex].text;
+        responseTag.textContent = selectedTypeText;
         this.parentNode.appendChild(responseTag);
-        updateSummaryTable();
-      });
-      document.querySelectorAll('input[name="status"]').forEach(radio => {
-        radio.addEventListener('change', function (e) {
-          const previousResponse = this.closest('.radio-group').nextElementSibling;
-          if (previousResponse?.className === 'response-tag') {
-            previousResponse.remove();
-          }
-          const responseTag = document.createElement('div');
-          responseTag.className = 'response-tag';
-          responseTag.textContent = this.labels[0].textContent;
-          this.closest('.radio-group').after(responseTag);
-          updateSummaryTable();
-        });
-      });
-      document.getElementById('generatePDF').addEventListener('click', function() {
-        generatePDF();
-      });
-
-      function generatePDF() {
-        const doc = new jsPDF();
-        const form = document.getElementById('technicianForm');
-        const technicianName = form.technicianName.options[form.technicianName.selectedIndex].text;
-        
-        const date = document.getElementById('datetime').textContent;
-        const location = document.getElementById('location').innerText;
-        const interventionType = document.getElementById('interventionType').options[document.getElementById('interventionType').selectedIndex].text;
-        const problemType = document.getElementById('problemType').options[document.getElementById('problemType').selectedIndex].text;
-        const status = document.querySelector('input[name="status"]:checked')?.labels[0].textContent || '';
-        const interventionStatus = document.getElementById('interventionStatus').options[document.getElementById('interventionStatus').selectedIndex].text;
-        const comments = document.getElementById('comments').value || "Pas de commentaire";
-        const projectName = document.getElementById('projectName').value;
-        doc.setFillColor(245, 245, 245);
-        doc.rect(0, 0, 220, 297, 'F');
-        doc.setFillColor(255, 255, 255);
-        doc.roundedRect(15, 15, 180, 267, 3, 3, 'F');
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(22);
-        doc.setTextColor(51, 51, 51);
-        doc.text("Rapport d'Intervention Technique", 25, 35);
-        doc.setFontSize(14);
-        doc.text("Informations du Technicien", 25, 50);
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(11);
-        doc.setTextColor(68, 68, 68);
-        doc.text(`Nom: ${technicianName}`, 30, 60);
-        doc.text(`Date et Heure: ${date}`, 30, 70);
-        doc.text(`Projet/Client: ${projectName}`, 30, 80);
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(14);
-        doc.setTextColor(51, 51, 51);
-        doc.text("Localisation", 25, 95);
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(11);
-        doc.setTextColor(68, 68, 68);
-        const locationLines = doc.splitTextToSize(location, 160);
-        for (let i = 0; i < locationLines.length; i++) {
-          doc.text(locationLines[i], 30, 105 + i * 7);
-        }
-        let yPos = 105 + locationLines.length * 7;
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(14);
-        doc.setTextColor(51, 51, 51);
-        doc.text("Détails de l'Intervention", 25, yPos + 15);
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(11);
-        doc.setTextColor(68, 68, 68);
-        doc.text(`Type d'Intervention: ${interventionType}`, 30, yPos + 25);
-        doc.text(`Nature du Problème: ${problemType}`, 30, yPos + 35);
-        doc.text(`État: ${status}`, 30, yPos + 45);
-        doc.text(`Statut de l'intervention: ${interventionStatus}`, 30, yPos + 55);
-        doc.text('Commentaires:', 30, yPos + 65);
-        const commentLines = doc.splitTextToSize(comments, 160);
-        for (let i = 0; i < commentLines.length; i++) {
-          doc.text(commentLines[i], 30, yPos + 75 + i * 7);
-        }
-        doc.addPage();
-        doc.setFillColor(245, 245, 245);
-        doc.rect(0, 0, 220, 297, 'F');
-        doc.setFillColor(255, 255, 255);
-        doc.roundedRect(15, 15, 180, 267, 3, 3, 'F');
-        let page2YPos = 35;
-        if (interventionTypeHistory.length > 1) {
-          doc.setFont("helvetica", "bold");
-          doc.setFontSize(14);
-          doc.setTextColor(51, 51, 51);
-          doc.text("Historique des Types d'Intervention", 25, page2YPos);
-          doc.setFont("helvetica", "normal");
-          doc.setFontSize(11);
-          doc.setTextColor(68, 68, 68);
-          const historyText = interventionTypeHistory.slice(0, -1).map(h => `${h.text} (${new Date(h.timestamp).toLocaleTimeString()})`).join(', ');
-          const historyLines = doc.splitTextToSize(historyText, 160);
-          for (let i = 0; i < historyLines.length; i++) {
-            doc.text(historyLines[i], 30, page2YPos + 10 + i * 7);
-          }
-          page2YPos += 20 + historyLines.length * 7;
-        }
-        if (problemTypeHistory.length > 1) {
-          doc.setFont("helvetica", "bold");
-          doc.setFontSize(14);
-          doc.setTextColor(51, 51, 51);
-          doc.text("Historique des Problèmes", 25, page2YPos);
-          doc.setFont("helvetica", "normal");
-          doc.setFontSize(11);
-          doc.setTextColor(68, 68, 68);
-          const historyText = problemTypeHistory.slice(0, -1).map(h => `${h.text} (${new Date(h.timestamp).toLocaleTimeString()})`).join(', ');
-          const historyLines = doc.splitTextToSize(historyText, 160);
-          for (let i = 0; i < historyLines.length; i++) {
-            doc.text(historyLines[i], 30, page2YPos + 10 + i * 7);
-          }
-          page2YPos += 20 + historyLines.length * 7;
-        }
-        if (document.getElementById('preview').children.length > 0) {
-          doc.setFont("helvetica", "bold");
-          doc.setFontSize(14);
-          doc.setTextColor(51, 51, 51);
-          doc.text("Médias Joints", 25, page2YPos);
-          doc.setFont("helvetica", "normal");
-          doc.setFontSize(11);
-          doc.setTextColor(68, 68, 68);
-          const images = document.getElementById('preview').getElementsByTagName('img');
-          let imageY = page2YPos + 15;
-          for (let i = 0; i < images.length && i < 3; i++) {
-            try {
-              doc.addImage(images[i].src, 'JPEG', 30, imageY, 50, 50);
-              imageY += 60;
-            } catch (e) {
-              console.error('Error adding image to PDF:', e);
-            }
-          }
-          page2YPos = imageY + 10;
-        }
-        doc.setFont("helvetica", "italic");
-        doc.setFontSize(9);
-        doc.setTextColor(128, 128, 128);
-        doc.text(`Document généré le ${new Date().toLocaleString('fr-FR')}`, 25, 275);
-        doc.save(`rapport_intervention_${new Date().toISOString().split('T')[0]}.pdf`);
-        alert('Rapport PDF généré avec succès!');
       }
-      document.getElementById('technicianName').addEventListener('change', function (e) {
-        const previousResponse = this.nextElementSibling;
+    });
+    document.getElementById('problemType').addEventListener('change', function(e) {
+      if (this.value) {
+        problemTypeHistory.push({
+          value: this.value,
+          text: this.options[this.selectedIndex].text,
+          timestamp: new Date()
+        });
+      }
+      const responseTag = document.createElement('div');
+      responseTag.className = 'response-tag';
+      responseTag.textContent = this.options[this.selectedIndex].text;
+      this.parentNode.appendChild(responseTag);
+      updateSummaryTable();
+    });
+    document.querySelectorAll('input[name="status"]').forEach(radio => {
+      radio.addEventListener('change', function(e) {
+        const previousResponse = this.closest('.radio-group').nextElementSibling;
         if (previousResponse?.className === 'response-tag') {
           previousResponse.remove();
         }
         const responseTag = document.createElement('div');
         responseTag.className = 'response-tag';
-        responseTag.textContent = this.options[this.selectedIndex].text;
-        this.parentNode.appendChild(responseTag);
+        responseTag.textContent = this.labels[0].textContent;
+        this.closest('.radio-group').after(responseTag);
         updateSummaryTable();
       });
-      function updateSummaryTable() {
-        const summaryTableBody = document.getElementById('summaryTableBody');
-        summaryTableBody.innerHTML = '';
+    });
+    document.getElementById('technicianName').addEventListener('change', function(e) {
+      const previousResponse = this.nextElementSibling;
+      if (previousResponse?.className === 'response-tag') {
+        previousResponse.remove();
+      }
+      const responseTag = document.createElement('div');
+      responseTag.className = 'response-tag';
+      responseTag.textContent = this.options[this.selectedIndex].text;
+      this.parentNode.appendChild(responseTag);
+      updateSummaryTable();
+    });
 
-        const technicianName = document.getElementById('technicianName');
-        const interventionType = document.getElementById('interventionType');
-        const problemType = document.getElementById('problemType');
-        const status = document.querySelector('input[name="status"]:checked');
-        const interventionStatus = document.getElementById('interventionStatus');
-        const comments = document.getElementById('comments');
+    function updateSummaryTable() {
+      const summaryTableBody = document.getElementById('summaryTableBody');
+      summaryTableBody.innerHTML = '';
 
-        const rows = [
-          ['Date et Heure', document.getElementById('datetime').textContent],
-          ['Localisation', document.getElementById('location').textContent],
-          ['Projet/Client', document.getElementById('projectName').value],
-          ['Technicien', technicianName.options[technicianName.selectedIndex].text],
-          ['Type d\'Intervention', interventionType.options[interventionType.selectedIndex].text],
-          ['Nature du Problème', problemType.options[problemType.selectedIndex].text],
-          ['État', status ? status.labels[0].textContent : ''],
-          ['Statut de l\'intervention', interventionStatus.options[interventionStatus.selectedIndex].text],
-          ['Commentaires', comments.value || "Pas de commentaire"]
-        ];
+      const technicianName = document.getElementById('technicianName');
+      const submissionDate = document.getElementById('submissionDate');
+      const projectName = document.getElementById('projectName');
+      const interventionType = document.getElementById('interventionType');
+      const problemType = document.getElementById('problemType');
+      const status = document.querySelector('input[name="status"]:checked');
+      const interventionStatus = document.getElementById('interventionStatus');
+      const comments = document.getElementById('comments');
 
-        if (interventionTypeHistory.length > 1) {
-          rows.push(['Historique des Types d\'Intervention', interventionTypeHistory.slice(0, -1).map(h => `${h.text} (${new Date(h.timestamp).toLocaleTimeString()})`).join(', ')]);
-        }
+      const rows = [
+        ['Date de Soumission', submissionDate.value],
+        ['Date et Heure', document.getElementById('datetime').textContent],
+        ['Localisation', document.getElementById('location').textContent],
+        ['Projet/Client', projectName.value],
+        ['Technicien', technicianName.options[technicianName.selectedIndex].text],
+        ['Type d\'Intervention', interventionType.options[interventionType.selectedIndex].text],
+        ['Nature du Problème', problemType.options[problemType.selectedIndex].text],
+        ['État', status ? status.labels[0].textContent : ''],
+        ['Statut de l\'intervention', interventionStatus.options[interventionStatus.selectedIndex].text],
+        ['Commentaires', comments.value || "Pas de commentaire"]
+      ];
 
-        if (problemTypeHistory.length > 1) {
-          rows.push(['Historique des Problèmes', problemTypeHistory.slice(0, -1).map(h => `${h.text} (${new Date(h.timestamp).toLocaleTimeString()})`).join(', ')]);
-        }
+      if (interventionTypeHistory.length > 1) {
+        rows.push(['Historique des Types d\'Intervention', interventionTypeHistory.slice(0, -1).map(h => `${h.text} (${new Date(h.timestamp).toLocaleTimeString()})`).join(', ')]);
+      }
 
-        rows.forEach(([field, value]) => {
-          if (value && value !== 'Sélectionnez un technicien' && value !== 'Sélectionnez le type' && value !== 'Sélectionnez le problème' && value !== 'Sélectionnez le statut') {
-            const row = document.createElement('tr');
-            row.innerHTML = `
+      if (problemTypeHistory.length > 1) {
+        rows.push(['Historique des Problèmes', problemTypeHistory.slice(0, -1).map(h => `${h.text} (${new Date(h.timestamp).toLocaleTimeString()})`).join(', ')]);
+      }
+
+      rows.forEach(([field, value]) => {
+        if (value && value !== 'Sélectionnez un technicien' && value !== 'Sélectionnez le type' && value !== 'Sélectionnez le problème' && value !== 'Sélectionnez le statut') {
+          const row = document.createElement('tr');
+          row.innerHTML = `
                     <td>${field}</td>
                     <td>${value}</td>
                   `;
-            summaryTableBody.appendChild(row);
-          }
-        });
-      }
-      function exportToExcel() {
-        const summaryTable = document.querySelector('.summary-table');
-        const rows = Array.from(summaryTable.querySelectorAll('tr'));
-        const data = rows.map(row => Array.from(row.cells).map(cell => cell.textContent));
-        const transposedData = data[0].map((_, colIndex) => data.map(row => row[colIndex]));
-        const transposedTable = document.createElement('table');
-        transposedTable.style.display = 'none';
-        transposedData.forEach(row => {
-          const tr = transposedTable.insertRow();
-          row.forEach(cell => {
-            const td = tr.insertCell();
-            td.textContent = cell;
-          });
-        });
-        document.body.appendChild(transposedTable);
-        const wb = XLSX.utils.table_to_book(transposedTable, {
-          sheet: "Récapitulatif"
-        });
-        document.body.removeChild(transposedTable);
-        XLSX.writeFile(wb, `recap_intervention_${new Date().toISOString().split('T')[0]}.xlsx`);
-      }
-      document.getElementById('exportExcel').addEventListener('click', exportToExcel);
-      document.getElementById('interventionStatus').addEventListener('change', function (e) {
-        const previousResponse = this.nextElementSibling;
-        if (previousResponse?.className === 'response-tag') {
-          previousResponse.remove();
+          summaryTableBody.appendChild(row);
         }
-        const responseTag = document.createElement('div');
-        responseTag.className = 'response-tag';
-        responseTag.textContent = this.options[this.selectedIndex].text;
-        this.parentNode.appendChild(responseTag);
-        updateSummaryTable();
       });
-      document.getElementById('comments').addEventListener('input', function (e) {
-        updateSummaryTable();
-      });
-      document.getElementById('projectName').addEventListener('input', function (e) {
-        updateSummaryTable();
-      });
-  </script>
-</body>
-</html>
+    }
 
+    document.getElementById('interventionStatus').addEventListener('change', function(e) {
+      const previousResponse = this.nextElementSibling;
+      if (previousResponse?.className === 'response-tag') {
+        previousResponse.remove();
+      }
+      const responseTag = document.createElement('div');
+      responseTag.className = 'response-tag';
+      responseTag.textContent = this.options[this.selectedIndex].text;
+      this.parentNode.appendChild(responseTag);
+      updateSummaryTable();
+    });
+    document.getElementById('comments').addEventListener('input', function(e) {
+      updateSummaryTable();
+    });
+    document.getElementById('projectName').addEventListener('input', function(e) {
+      updateSummaryTable();
+    });
+    document.getElementById('submissionDate').addEventListener('change', function(e) {
+      updateSummaryTable();
+    });
+  </script>
   <script>
-    document.getElementById("technicianForm").addEventListener("submit", function (e) {
-        e.preventDefault();
-  
-        document.getElementById("submitTogooglesheet").innerText = "Envoi en cours...";
-  
-        let formData = new FormData(technicianForm);
-  
-        fetch("https://script.google.com/macros/s/AKfycbxhCQVYPZrZu8JS0EtYO9hsXnL1yLbWKso5jEuNXtxvFjPv3RnTHfsFA6fLFygE3z-6jw/exec", {
-            method: "POST",
-            body: formData
+    document.getElementById("technicianForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      document.getElementById("submitTogooglesheet").innerText = "Envoi en cours...";
+
+      let formData = new FormData(technicianForm);
+
+      fetch("https://script.google.com/macros/s/AKfycbySn5t8TiEDXPY9F-7yEwskuRgk-AzNrQZAVPJbukq34-Fb4h5vKFAAYP_tgsHX-x3c5g/exec", {
+          method: "POST",
+          body: formData
         })
         .then(response => response.text())
         .then(data => {
-            alert("Données envoyées avec succès !");
-            document.getElementById("submitTogooglesheet").innerText = "send to google sheet";
+          alert("Données envoyées avec succès !");
+          document.getElementById("submitTogooglesheet").innerText = "send to google sheet";
         })
         .catch(error => {
-            alert("Erreur lors de l'envoi des données.");
-            document.getElementById("submitTogooglesheet").innerText = "Try again";
+          alert("Erreur lors de l'envoi des données.");
+          document.getElementById("submitTogooglesheet").innerText = "Try again";
         });
     });
   </script>
-  
+
 </body>
+
 </html>
