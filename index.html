@@ -293,7 +293,8 @@
           <option value="AYMEN">AYMEN</option>
           <option value="REDA">REDA</option>
           <option value="ABDERAHMAN">ABDERAHMAN</option>
-          <option value="NOURDINE">NOURDINE</option>
+          <option value="OUSSAMA">OUSSAMA</option>
+          <option value="ASOPHI">ASOPHI</option>
           <option value="autre">Autre</option>
         </select>
       </div>
@@ -325,7 +326,7 @@
           <option value="">Sélectionnez le type</option>
           <option value="electricite">Électricité</option>
           <option value="domotique">Programmation (Domotique)</option>
-          <option value="climatisation">Climatisation</option>
+          <option value="climatisation/chauffage">Climatisation/Chauffage</option>
           <option value="sonorisation">Sonorisation</option>
           <option value="videophone">Vidéophone</option>
           <option value="supervision">Supervision</option>
@@ -389,7 +390,7 @@
       </div>
 
       <div class="form-actions">
-        <button type="submit" id="submitTogooglesheet"style="margin-top: 10px; background-color: #36a502;">Send to Google Sheet</button>
+        <button type="submit" id="submitTogooglesheet" style="margin-top: 10px; background-color: #36a502;">Send to Google Sheet</button>
         <button type="button" id="submitToDatabase" style="margin-top: 10px; background-color: #f00c0c;">Send to TIS DB</button>
       </div>
     </form>
@@ -474,7 +475,7 @@
       const problems = {
         'electricite': ['Pannes de courant', 'Problèmes de câblage', 'Prises défectueuses', 'Éclairage défaillant', 'Autre'],
         'domotique': ['Problèmes de connectivité', 'Bugs logiciels', 'Erreurs de configuration', 'Mises à jour manquantes', 'Incompatibilité des appareils', 'Configuration point d\'accès', 'Autre'],
-        'climatisation': ['Insuffisance de refroidissement', 'Problèmes de thermostat', 'Bruits inhabituels', 'Autre'],
+        'climatisation/chauffage': ['Insuffisance de refroidissement', 'Problèmes de thermostat', 'Bruits inhabituels', 'Autre'],
         'sonorisation': ['Problèmes de connectivité', 'Qualité sonore dégradée', 'Défaillance des amplificateurs', 'Pannes des haut-parleurs', 'Autre'],
         'videophone': ['Problèmes de connexion réseau', 'Problèmes d\'alimentation', 'Qualité vidéo ou audio dégradée', 'Bouton d\'appel défectueux', 'Problèmes de synchronisation', 'Installation', 'Configuration', 'Autre'],
         'supervision': ['Problèmes de connectivité', 'Erreurs système', 'Problèmes d\'affichage', 'Erreurs de données', 'Autre'],
@@ -489,12 +490,20 @@
         });
       }
       if (selectedType && problems[selectedType]) {
-        problems[selectedType].forEach(problem => {
+        let problemList = problems[selectedType];
+
+        // Add "Configuration Domotique" to "Programmation (Domotique)" problems
+        if (selectedType === 'domotique') {
+          problemList = [...problemList, 'Configuration Domotique'];
+        }
+
+        problemList.forEach(problem => {
           const option = document.createElement('option');
           option.value = problem.toLowerCase().replace(/\s+/g, '_');
           option.textContent = problem;
           problemType.appendChild(option);
         });
+
         const selectedTypeText = this.options[this.selectedIndex].text;
         const responseTag = document.createElement('div');
         responseTag.className = 'response-tag';
@@ -631,7 +640,6 @@
         });
     });
   </script>
-
 </body>
 
 </html>
