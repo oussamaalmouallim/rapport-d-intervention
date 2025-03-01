@@ -14,6 +14,15 @@
       margin: 20px auto;
       padding: 20px;
       background-color: #f5f5f5;
+      background-image: linear-gradient(to bottom right, #f9f9f9, #ececec);
+      background-size: 200% 200%;
+      animation: gradientBG 15s ease infinite;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     .form-container {
@@ -22,11 +31,24 @@
       background-position: top right;
       padding: 30px;
       border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      transition: all 0.2s ease;
+      background-color: white;
+      border-top: 5px solid #007bff;
+    }
+
+    .form-container:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
     }
 
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 25px;
+      transition: all 0.2s ease;
+    }
+
+    .form-group:hover {
+      transform: translateX(2px);
     }
 
     label {
@@ -34,16 +56,31 @@
       margin-bottom: 8px;
       font-weight: bold;
       color: #333;
+      transition: color 0.3s;
+    }
+
+    .form-group:hover label {
+      color: #007bff;
     }
 
     input[type="text"],
     select,
     textarea {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       border: 1px solid #ddd;
       border-radius: 5px;
       margin-bottom: 10px;
+      transition: all 0.3s ease;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    input[type="text"]:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+      outline: none;
     }
 
     .radio-group {
@@ -56,6 +93,11 @@
       display: flex;
       align-items: center;
       gap: 5px;
+      transition: transform 0.2s;
+    }
+
+    .radio-option:hover {
+      transform: translateY(-2px);
     }
 
     button {
@@ -66,55 +108,88 @@
       border-radius: 5px;
       cursor: pointer;
       font-size: 16px;
-      transition: background-color 0.3s;
+      transition: all 0.3s;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
     }
 
     button:hover {
       background-color: #0056b3;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0,0,0,0.15);
     }
 
-    .capture-section {
-      border: 2px dashed #ccc;
-      padding: 20px;
-      border-radius: 5px;
-      margin: 20px 0;
-      text-align: center;
+    button:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: none;
     }
 
-    .recording-controls {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      margin: 20px 0;
+    button:hover:after {
+      display: none;
+    }
+
+    h1 {
+      color: #2c3e50;
+      border-bottom: 2px solid #007bff;
+      padding-bottom: 10px;
+      margin-bottom: 30px;
+      position: relative;
+    }
+
+    h1:after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100px;
+      height: 2px;
+      background-color: #0056b3;
+      animation: none;
     }
 
     #location {
       background: #f8f9fa;
-      padding: 10px;
-      border-radius: 5px;
+      padding: 15px;
+      border-radius: 8px;
       margin: 10px 0;
+      border-left: 4px solid #007bff;
+      transition: all 0.3s;
     }
 
     #datetime {
       font-weight: bold;
       color: #0056b3;
-    }
-
-    .location-details {
-      margin-top: 10px;
-      font-size: 14px;
-      color: #666;
+      padding: 10px;
+      border-radius: 5px;
+      background-color: rgba(0, 123, 255, 0.1);
+      display: inline-block;
+      animation: none;
     }
 
     .response-tag {
       background-color: #e9ecef;
       padding: 8px 12px;
-      border-radius: 4px;
+      border-radius: 50px;
       margin: 5px 0;
       display: inline-block;
       font-size: 0.9em;
       color: #495057;
       margin-top: 5px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      transition: all 0.3s;
+    }
+
+    .response-tag:hover {
+      background-color: #007bff;
+      color: white;
+      transform: translateY(-2px);
     }
 
     .summary-table {
@@ -122,67 +197,37 @@
       margin: 20px 0;
       border-collapse: collapse;
       background: white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+      border-radius: 8px;
+      overflow: hidden;
     }
 
     .summary-table th,
     .summary-table td {
-      padding: 10px;
-      border: 1px solid #ddd;
+      padding: 15px;
+      border: 1px solid #eaeaea;
       text-align: left;
+      transition: all 0.3s;
+    }
+
+    .summary-table tr:hover td {
+      background-color: rgba(0, 123, 255, 0.05);
     }
 
     .summary-table th {
       background-color: #f8f9fa;
       font-weight: bold;
+      color: #2c3e50;
     }
 
     .summary-table caption {
       font-weight: bold;
-      padding: 10px;
+      padding: 15px;
       background-color: #007bff;
       color: white;
       caption-side: top;
-    }
-
-    .comment-field {
-      width: 100%;
-      min-height: 100px;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      margin: 10px 0;
-      resize: vertical;
-    }
-
-    .status-select {
-      background-color: #fff;
-      padding: 8px;
-      border-radius: 4px;
-      border: 1px solid #ddd;
-      width: 100%;
-    }
-
-    .preview-item {
-      display: inline-block;
-      position: relative;
-      margin: 10px;
-    }
-
-    .delete-btn {
-      position: absolute;
-      top: -10px;
-      right: -10px;
-      background: red;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      line-height: 20px;
-      text-align: center;
-      cursor: pointer;
-      font-size: 12px;
-      padding: 0;
+      border-radius: 8px 8px 0 0;
+      font-size: 1.1em;
     }
 
     /* Style pour le champ Date de Soumission */
@@ -190,15 +235,46 @@
       background-color: #e9f7ff;
       border: 1px solid #a0d2eb;
       border-radius: 8px;
-      padding: 10px;
+      padding: 12px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
       transition: all 0.3s ease;
+      cursor: pointer;
     }
 
     #submissionDate:focus {
       border-color: #4db6ac;
-      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0 0 3px rgba(77, 182, 172, 0.25);
       outline: none;
+      transform: translateY(-2px);
+    }
+
+    #interventionType, #problemType, #interventionStatus, #technicianName {
+      background-color: #fff;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    #interventionType:hover, #problemType:hover, #interventionStatus:hover, #technicianName:hover {
+      border-color: #007bff;
+    }
+
+    #comments {
+      transition: height 0.3s;
+    }
+
+    #comments:focus {
+      height: 150px;
+    }
+
+    input[type="radio"] {
+      accent-color: #007bff;
+      transform: scale(1.2);
+      transition: all 0.2s;
+    }
+
+    input[type="radio"]:checked + label {
+      color: #007bff;
+      font-weight: bold;
     }
   </style>
   <script type="module">
@@ -463,7 +539,7 @@
       if (document.getElementById('location').textContent.includes('Erreur') || document.getElementById('location').textContent.includes('Recherche')) {
         updateLocation();
       }
-    }, 30000);
+    }, 60000);
     if (navigator.geolocation) {}
     let mediaRecorder;
     let audioChunks = [];
@@ -523,7 +599,7 @@
       responseTag.className = 'response-tag';
       responseTag.textContent = this.options[this.selectedIndex].text;
       this.parentNode.appendChild(responseTag);
-      updateSummaryTable();
+      updateSummaryTableThrottled();
     });
     document.querySelectorAll('input[name="status"]').forEach(radio => {
       radio.addEventListener('change', function(e) {
@@ -535,7 +611,7 @@
         responseTag.className = 'response-tag';
         responseTag.textContent = this.labels[0].textContent;
         this.closest('.radio-group').after(responseTag);
-        updateSummaryTable();
+        updateSummaryTableThrottled();
       });
     });
     document.getElementById('technicianName').addEventListener('change', function(e) {
@@ -547,7 +623,7 @@
       responseTag.className = 'response-tag';
       responseTag.textContent = this.options[this.selectedIndex].text;
       this.parentNode.appendChild(responseTag);
-      updateSummaryTable();
+      updateSummaryTableThrottled();
     });
 
     function updateSummaryTable() {
@@ -596,6 +672,12 @@
       });
     }
 
+    let updateSummaryTimeout;
+    function updateSummaryTableThrottled() {
+      clearTimeout(updateSummaryTimeout);
+      updateSummaryTimeout = setTimeout(updateSummaryTable, 300);
+    }
+
     document.getElementById('interventionStatus').addEventListener('change', function(e) {
       const previousResponse = this.nextElementSibling;
       if (previousResponse?.className === 'response-tag') {
@@ -605,16 +687,16 @@
       responseTag.className = 'response-tag';
       responseTag.textContent = this.options[this.selectedIndex].text;
       this.parentNode.appendChild(responseTag);
-      updateSummaryTable();
+      updateSummaryTableThrottled();
     });
     document.getElementById('comments').addEventListener('input', function(e) {
-      updateSummaryTable();
+      updateSummaryTableThrottled();
     });
     document.getElementById('projectName').addEventListener('input', function(e) {
-      updateSummaryTable();
+      updateSummaryTableThrottled();
     });
     document.getElementById('submissionDate').addEventListener('change', function(e) {
-      updateSummaryTable();
+      updateSummaryTableThrottled();
     });
   </script>
   <script>
