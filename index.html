@@ -722,6 +722,102 @@
         });
     });
   </script>
+  </script>
+<script src="https://unpkg.com/@supabase/supabase-js"></script>
+<script>
+// Supabase Configuration
+const supabaseUrl = "https://quflgxjymdocfcqwppxl.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF1ZmxneGp5bWRvY2ZjcXdwcHhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA4MjI5NzAsImV4cCI6MjA1NjM5ODk3MH0.084B-my88YIXT0TZ2uD0UT82xU2M4yRhBv2idNUSjLQ";
+
+// Load Supabase library
+const script = document.createElement('script');
+script.src = "https://unpkg.com/@supabase/supabase-js";
+script.onload = initSupabase;
+document.head.appendChild(script);
+
+function initSupabase() {
+  // Initialize Supabase client
+  const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+  // Add Supabase submission button
+  const submitToSupabaseButton = document.createElement('button');
+  submitToSupabaseButton.id = 'submitToSupabase';
+  submitToSupabaseButton.textContent = 'Send to Supabase';
+  submitToSupabaseButton.style.marginTop = '10px';
+  submitToSupabaseButton.style.backgroundColor = '#4CAF50';
+  
+  const formActions = document.querySelector('.form-actions');
+  formActions.appendChild(submitToSupabaseButton);
+
+  // Supabase submission event listener
+  submitToSupabaseButton.addEventListener('click', async function(event) {
+    event.preventDefault();
+
+    // Collect data from summary table
+    const summaryTable = document.getElementById('summaryTableBody');
+    const summaryRows = Array.from(summaryTable.querySelectorAll('tr'));
+
+    // Create an object to store report data
+    const reportData = {};
+
+    // Debugging function to clean and log keys
+    function cleanKey(key) {
+      const cleaned = key.toLowerCase()
+        .replace(/\s+/g, '_')
+        .replace(/[()]/g, '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/'/g, '_')
+        .replace(/\//g, '_');
+      return cleaned;
+    }
+
+    // Iterate through summary rows and populate reportData
+    summaryRows.forEach(row => {
+      const [field, value] = row.querySelectorAll('td');
+      const rawKey = field.textContent;
+      const cleanedKey = cleanKey(rawKey);
+
+      // Log each key for debugging
+      console.log(`Raw Key: "${rawKey}" -> Cleaned Key: "${cleanedKey}"`);
+
+      reportData[cleanedKey] = value.textContent;
+    });
+
+    // More detailed debugging
+    console.log('Prepared Report Data:', JSON.stringify(reportData, null, 2));
+
+    try {
+      // Send data to Supabase
+      const { data, error } = await supabase
+        .from("tis_interventions")
+        .insert([reportData]);
+
+      if (error) {
+        console.error("Detailed Supabase Error:", error);
+        console.log("Error Details:", {
+          code: error.code,
+          details: error.details,
+          message: error.message
+        });
+        throw error;
+      }
+
+      alert("Rapport soumis avec succès sur Supabase !");
+      submitToSupabaseButton.innerText = "Sent to Supabase, thank you!";
+
+      // Optional: Reset intervention histories
+      interventionTypeHistory = [];
+      problemTypeHistory = [];
+
+    } catch (error) {
+      console.error("Erreur lors de l'envoi à Supabase :", error);
+      alert(`Erreur lors de l'envoi du rapport à Supabase : ${error.message}`);
+      submitToSupabaseButton.innerText = "Try again";
+    }
+  });
+}
+</script>
 </body>
 
 </html>
