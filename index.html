@@ -806,11 +806,7 @@
           problemType.appendChild(option);
         });
 
-        const selectedTypeText = this.options[this.selectedIndex].text;
-        const responseTag = document.createElement('div');
-        responseTag.className = 'response-tag';
-        responseTag.textContent = selectedTypeText;
-        this.parentNode.appendChild(responseTag);
+        // Removed the response tag creation for intervention type
       }
     });
     document.getElementById('problemType').addEventListener('change', function(e) {
