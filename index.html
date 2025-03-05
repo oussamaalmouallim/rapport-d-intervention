@@ -7,276 +7,7 @@
   <title>Formulaire d'Intervention Technique</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      max-width: 800px;
-      margin: 20px auto;
-      padding: 20px;
-      background-color: #f5f5f5;
-      background-image: linear-gradient(to bottom right, #f9f9f9, #ececec);
-      background-size: 200% 200%;
-      animation: gradientBG 15s ease infinite;
-    }
-
-    @keyframes gradientBG {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    .form-container {
-      background: url('https://www.ecoview.ae/wp-content/uploads/2022/02/TIS-LOGO-e1646026001988_01e0013b0.png') no-repeat;
-      background-size: 20%;
-      background-position: top right;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-      transition: all 0.2s ease;
-      background-color: white;
-      border-top: 5px solid #007bff;
-    }
-
-    .form-container:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-    }
-
-    .form-group {
-      margin-bottom: 25px;
-      transition: all 0.2s ease;
-    }
-
-    .form-group:hover {
-      transform: translateX(2px);
-    }
-
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: bold;
-      color: #333;
-      transition: color 0.3s;
-    }
-
-    .form-group:hover label {
-      color: #007bff;
-    }
-
-    input[type="text"],
-    select,
-    textarea {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      margin-bottom: 10px;
-      transition: all 0.3s ease;
-      box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-    }
-
-    input[type="text"]:focus,
-    select:focus,
-    textarea:focus {
-      border-color: #007bff;
-      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
-      outline: none;
-    }
-
-    .radio-group {
-      display: flex;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-
-    .radio-option {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      transition: transform 0.2s;
-    }
-
-    .radio-option:hover {
-      transform: translateY(-2px);
-    }
-
-    button {
-      background-color: #007bff;
-      color: white;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: all 0.3s;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      position: relative;
-      overflow: hidden;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 8px rgba(0,0,0,0.15);
-    }
-
-    button:after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      transition: none;
-    }
-
-    button:hover:after {
-      display: none;
-    }
-
-    h1 {
-      color: #2c3e50;
-      border-bottom: 2px solid #007bff;
-      padding-bottom: 10px;
-      margin-bottom: 30px;
-      position: relative;
-    }
-
-    h1:after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 100px;
-      height: 2px;
-      background-color: #0056b3;
-      animation: none;
-    }
-
-    #location {
-      background: #f8f9fa;
-      padding: 15px;
-      border-radius: 8px;
-      margin: 10px 0;
-      border-left: 4px solid #007bff;
-      transition: all 0.3s;
-    }
-
-    #datetime {
-      font-weight: bold;
-      color: #0056b3;
-      padding: 10px;
-      border-radius: 5px;
-      background-color: rgba(0, 123, 255, 0.1);
-      display: inline-block;
-      animation: none;
-    }
-
-    .response-tag {
-      background-color: #e9ecef;
-      padding: 8px 12px;
-      border-radius: 50px;
-      margin: 5px 0;
-      display: inline-block;
-      font-size: 0.9em;
-      color: #495057;
-      margin-top: 5px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-      transition: all 0.3s;
-    }
-
-    .response-tag:hover {
-      background-color: #007bff;
-      color: white;
-      transform: translateY(-2px);
-    }
-
-    .summary-table {
-      width: 100%;
-      margin: 20px 0;
-      border-collapse: collapse;
-      background: white;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    .summary-table th,
-    .summary-table td {
-      padding: 15px;
-      border: 1px solid #eaeaea;
-      text-align: left;
-      transition: all 0.3s;
-    }
-
-    .summary-table tr:hover td {
-      background-color: rgba(0, 123, 255, 0.05);
-    }
-
-    .summary-table th {
-      background-color: #f8f9fa;
-      font-weight: bold;
-      color: #2c3e50;
-    }
-
-    .summary-table caption {
-      font-weight: bold;
-      padding: 15px;
-      background-color: #007bff;
-      color: white;
-      caption-side: top;
-      border-radius: 8px 8px 0 0;
-      font-size: 1.1em;
-    }
-
-    /* Style pour le champ Date de Soumission */
-    #submissionDate {
-      background-color: #e9f7ff;
-      border: 1px solid #a0d2eb;
-      border-radius: 8px;
-      padding: 12px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
-
-    #submissionDate:focus {
-      border-color: #4db6ac;
-      box-shadow: 0 0 0 3px rgba(77, 182, 172, 0.25);
-      outline: none;
-      transform: translateY(-2px);
-    }
-
-    #interventionType, #problemType, #interventionStatus, #technicianName {
-      background-color: #fff;
-      transition: all 0.3s;
-      cursor: pointer;
-    }
-
-    #interventionType:hover, #problemType:hover, #interventionStatus:hover, #technicianName:hover {
-      border-color: #007bff;
-    }
-
-    #comments {
-      transition: height 0.3s;
-    }
-
-    #comments:focus {
-      height: 150px;
-    }
-
-    input[type="radio"] {
-      accent-color: #007bff;
-      transform: scale(1.2);
-      transition: all 0.2s;
-    }
-
-    input[type="radio"]:checked + label {
-      color: #007bff;
-      font-weight: bold;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
   <script type="module">
     import {
       initializeApp
@@ -453,9 +184,42 @@
         <textarea id="comments" name="comments" placeholder="Ajoutez vos commentaires ici..."></textarea>
       </div>
 
-      <div class="form-group">
+      <div class="summary-container">
+        <div class="summary-header">
+          <h3>Récapitulatif de l'Intervention</h3>
+          <button type="button" id="toggleSummary" class="toggle-summary">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" id="submitTogooglesheet" style="margin-top: 10px;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19.376 12.416L8.777 19.482c-.7.046-.137.078-.217.078-.133 0-.262-.053-.353-.146-.157-.148-.194-.368-.094-.558l3.53-6.39H5c-.202 0-.373-.116-.443-.3-.074-.181-.026-.385.116-.504l10.62-7.303c.094-.063.209-.095.323-.095.183 0 .341.084.437.232.094.147.105.333.026.49l-3.53 6.562h6.37c.204 0 .38.127.448.306.068.18.015.38-.12.495z"/>
+          </svg>
+          Send to Google Sheet
+        </button>
+        <button type="button" id="submitToDatabase" style="margin-top: 10px;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19.5 3.09L15 7.59V4h-2v7h7V9h-3.59l4.5-4.5-1.41-1.41zM4 13c0-2.21 1.79-4 4-4s4 1.79 4 4-1.79 4-4 4-4-1.79-4-4zm6 0c0-1.1-.9-2-2-2s-2 .9-2 2 .9 2 2 2 2-.9 2-2zM3 21v-2h18v2H3z"/>
+          </svg>
+          Send to TIS DB
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div id="summaryModal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Récapitulatif de l'Intervention</h3>
+        <button class="close-modal" id="closeModal">&times;</button>
+      </div>
+      <div id="summaryTableContainer">
         <table class="summary-table">
-          <caption>Récapitulatif de l'Intervention</caption>
           <tr>
             <th>Champ</th>
             <th>Sélection</th>
@@ -464,12 +228,7 @@
           </tbody>
         </table>
       </div>
-
-      <div class="form-actions">
-        <button type="submit" id="submitTogooglesheet" style="margin-top: 10px; background-color: #36a502;">Send to Google Sheet</button>
-        <button type="button" id="submitToDatabase" style="margin-top: 10px; background-color: #f00c0c;">Send to TIS DB</button>
-      </div>
-    </form>
+    </div>
   </div>
 
   <script>
@@ -698,12 +457,75 @@
     document.getElementById('submissionDate').addEventListener('change', function(e) {
       updateSummaryTableThrottled();
     });
+
+    document.getElementById('toggleSummary').addEventListener('click', function() {
+      const summaryModal = document.getElementById('summaryModal');
+      const modalContent = summaryModal.querySelector('.modal-content');
+      
+      // Update summary table content
+      updateSummaryTable();
+      
+      // Show modal with animation
+      summaryModal.classList.add('modal-show');
+      setTimeout(() => {
+        modalContent.classList.add('modal-content-show');
+      }, 10);
+      
+      // Change icon when toggled
+      this.classList.toggle('active');
+      if (this.classList.contains('active')) {
+        this.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34-3-3-3zm0-13C7 2 2.73 5.11 1 9.5 2.73 13.89 7 17 12 17s9.27-3.11 11-7.5C21.27 5.11 17 2 12 2zm0 13c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/>
+          </svg>
+        `;
+      } else {
+        this.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+          </svg>
+        `;
+      }
+    });
+    
+    // Add event listener for the close button
+    document.getElementById('closeModal').addEventListener('click', function() {
+      const summaryModal = document.getElementById('summaryModal');
+      const modalContent = summaryModal.querySelector('.modal-content');
+      
+      // Hide with animation
+      modalContent.classList.remove('modal-content-show');
+      setTimeout(() => {
+        summaryModal.classList.remove('modal-show');
+      }, 300);
+      
+      // Reset toggle button state
+      const toggleButton = document.getElementById('toggleSummary');
+      toggleButton.classList.remove('active');
+      toggleButton.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+        </svg>
+      `;
+    });
+    
+    // Close modal when clicking outside of content
+    document.getElementById('summaryModal').addEventListener('click', function(event) {
+      if (event.target === this) {
+        document.getElementById('closeModal').click();
+      }
+    });
+    
+    // ... existing code ...
   </script>
+
   <script>
     document.getElementById("technicianForm").addEventListener("submit", function(e) {
       e.preventDefault();
 
-      document.getElementById("submitTogooglesheet").innerText = "Envoi en cours...";
+      const submitBtn = document.getElementById("submitTogooglesheet");
+      submitBtn.innerText = "Envoi en cours...";
+      submitBtn.classList.add('active');
 
       let formData = new FormData(technicianForm);
 
@@ -714,110 +536,139 @@
         .then(response => response.text())
         .then(data => {
           alert("Données envoyées avec succès !");
-          document.getElementById("submitTogooglesheet").innerText = "send to google sheet";
+          submitBtn.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19.376 12.416L8.777 19.482c-.7.046-.137.078-.217.078-.133 0-.262-.053-.353-.146-.157-.148-.194-.368-.094-.558l3.53-6.39H5c-.202 0-.373-.116-.443-.3-.074-.181-.026-.385.116-.504l10.62-7.303c.094-.063.209-.095.323-.095.183 0 .341.084.437.232.094.147.105.333.026.49l-3.53 6.562h6.37c.204 0 .38.127.448.306.068.18.015.38-.12.495z"/>
+            </svg>
+            Send to Google Sheet
+          `;
+          setTimeout(() => submitBtn.classList.remove('active'), 2000);
         })
         .catch(error => {
           alert("Erreur lors de l'envoi des données.");
-          document.getElementById("submitTogooglesheet").innerText = "Try again";
+          submitBtn.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19.376 12.416L8.777 19.482c-.7.046-.137.078-.217.078-.133 0-.262-.053-.353-.146-.157-.148-.194-.368-.094-.558l3.53-6.39H5c-.202 0-.373-.116-.443-.3-.074-.181-.026-.385.116-.504l10.62-7.303c.094-.063.209-.095.323-.095.183 0 .341.084.437.232.094.147.105.333.026.49l-3.53 6.562h6.37c.204 0 .38.127.448.306.068.18.015.38-.12.495z"/>
+            </svg>
+            Try again
+          `;
+          submitBtn.classList.remove('active');
         });
     });
   </script>
-  </script>
-<script src="https://unpkg.com/@supabase/supabase-js"></script>
-<script>
-// Supabase Configuration
-const supabaseUrl = "https://quflgxjymdocfcqwppxl.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF1ZmxneGp5bWRvY2ZjcXdwcHhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA4MjI5NzAsImV4cCI6MjA1NjM5ODk3MH0.084B-my88YIXT0TZ2uD0UT82xU2M4yRhBv2idNUSjLQ";
 
-// Load Supabase library
-const script = document.createElement('script');
-script.src = "https://unpkg.com/@supabase/supabase-js";
-script.onload = initSupabase;
-document.head.appendChild(script);
+  <script src="https://unpkg.com/@supabase/supabase-js"></script>
+  <script>
+    // Supabase Configuration
+    const supabaseUrl = "https://quflgxjymdocfcqwppxl.supabase.co";
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF1ZmxneGp5bWRvY2ZjcXdwcHhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA4MjI5NzAsImV4cCI6MjA1NjM5ODk3MH0.084B-my88YIXT0TZ2uD0UT82xU2M4yRhBv2idNUSjLQ";
 
-function initSupabase() {
-  // Initialize Supabase client
-  const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+    // Load Supabase library
+    const script = document.createElement('script');
+    script.src = "https://unpkg.com/@supabase/supabase-js";
+    script.onload = initSupabase;
+    document.head.appendChild(script);
 
-  // Add Supabase submission button
-  const submitToSupabaseButton = document.createElement('button');
-  submitToSupabaseButton.id = 'submitToSupabase';
-  submitToSupabaseButton.textContent = 'Send to Supabase';
-  submitToSupabaseButton.style.marginTop = '10px';
-  submitToSupabaseButton.style.backgroundColor = '#3f51b5';
-  
-  const formActions = document.querySelector('.form-actions');
-  formActions.appendChild(submitToSupabaseButton);
+    function initSupabase() {
+      // Initialize Supabase client
+      const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-  // Supabase submission event listener
-  submitToSupabaseButton.addEventListener('click', async function(event) {
-    event.preventDefault();
+      // Add Supabase submission button
+      const submitToSupabaseButton = document.createElement('button');
+      submitToSupabaseButton.id = 'submitToSupabase';
+      submitToSupabaseButton.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-6h2v6zm4 0h-2v-6h2v6zm-2-8h-2V7h2v2z"/>
+        </svg>
+        Send to Supabase
+      `;
+      submitToSupabaseButton.style.marginTop = '10px';
+      
+      const formActions = document.querySelector('.form-actions');
+      formActions.appendChild(submitToSupabaseButton);
 
-    // Collect data from summary table
-    const summaryTable = document.getElementById('summaryTableBody');
-    const summaryRows = Array.from(summaryTable.querySelectorAll('tr'));
+      // Supabase submission event listener
+      submitToSupabaseButton.addEventListener('click', async function(event) {
+        event.preventDefault();
+        this.classList.add('active');
+        
+        // Collect data from summary table
+        const summaryTable = document.getElementById('summaryTableBody');
+        const summaryRows = Array.from(summaryTable.querySelectorAll('tr'));
 
-    // Create an object to store report data
-    const reportData = {};
+        // Create an object to store report data
+        const reportData = {};
 
-    // Debugging function to clean and log keys
-    function cleanKey(key) {
-      const cleaned = key.toLowerCase()
-        .replace(/\s+/g, '_')
-        .replace(/[()]/g, '')
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/'/g, '_')
-        .replace(/\//g, '_');
-      return cleaned;
-    }
+        // Debugging function to clean and log keys
+        function cleanKey(key) {
+          const cleaned = key.toLowerCase()
+            .replace(/\s+/g, '_')
+            .replace(/[()]/g, '')
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/'/g, '_')
+            .replace(/\//g, '_');
+          return cleaned;
+        }
 
-    // Iterate through summary rows and populate reportData
-    summaryRows.forEach(row => {
-      const [field, value] = row.querySelectorAll('td');
-      const rawKey = field.textContent;
-      const cleanedKey = cleanKey(rawKey);
+        // Iterate through summary rows and populate reportData
+        summaryRows.forEach(row => {
+          const [field, value] = row.querySelectorAll('td');
+          const rawKey = field.textContent;
+          const cleanedKey = cleanKey(rawKey);
 
-      // Log each key for debugging
-      console.log(`Raw Key: "${rawKey}" -> Cleaned Key: "${cleanedKey}"`);
+          // Log each key for debugging
+          console.log(`Raw Key: "${rawKey}" -> Cleaned Key: "${cleanedKey}"`);
 
-      reportData[cleanedKey] = value.textContent;
-    });
-
-    // More detailed debugging
-    console.log('Prepared Report Data:', JSON.stringify(reportData, null, 2));
-
-    try {
-      // Send data to Supabase
-      const { data, error } = await supabase
-        .from("tis_interventions")
-        .insert([reportData]);
-
-      if (error) {
-        console.error("Detailed Supabase Error:", error);
-        console.log("Error Details:", {
-          code: error.code,
-          details: error.details,
-          message: error.message
+          reportData[cleanedKey] = value.textContent;
         });
-        throw error;
-      }
 
-      alert("Rapport soumis avec succès sur Supabase !");
-      submitToSupabaseButton.innerText = "Sent to Supabase, thank you!";
+        // More detailed debugging
+        console.log('Prepared Report Data:', JSON.stringify(reportData, null, 2));
 
-      // Optional: Reset intervention histories
-      interventionTypeHistory = [];
-      problemTypeHistory = [];
+        try {
+          // Send data to Supabase
+          const { data, error } = await supabase
+            .from("tis_interventions")
+            .insert([reportData]);
 
-    } catch (error) {
-      console.error("Erreur lors de l'envoi à Supabase :", error);
-      alert(`Erreur lors de l'envoi du rapport à Supabase : ${error.message}`);
-      submitToSupabaseButton.innerText = "Try again";
+          if (error) {
+            console.error("Detailed Supabase Error:", error);
+            console.log("Error Details:", {
+              code: error.code,
+              details: error.details,
+              message: error.message
+            });
+            throw error;
+          }
+
+          alert("Rapport soumis avec succès sur Supabase !");
+          submitToSupabaseButton.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+            </svg>
+            Sent to Supabase, thank you!
+          `;
+          setTimeout(() => submitToSupabaseButton.classList.remove('active'), 2000);
+
+          // Optional: Reset intervention histories
+          interventionTypeHistory = [];
+          problemTypeHistory = [];
+
+        } catch (error) {
+          console.error("Erreur lors de l'envoi à Supabase :", error);
+          alert(`Erreur lors de l'envoi du rapport à Supabase : ${error.message}`);
+          submitToSupabaseButton.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-6h2v6zm4 0h-2v-6h2v6zm-2-8h-2V7h2v2z"/>
+            </svg>
+            Try again
+          `;
+          submitToSupabaseButton.classList.remove('active');
+        }
+      });
     }
-  });
-}
-</script>
+  </script>
 </body>
 
 </html>
