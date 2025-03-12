@@ -475,80 +475,6 @@
       to { opacity: 1; }
     }
   </style>
-  <script type="module">
-    import {
-      initializeApp
-    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import {
-      getFirestore,
-      collection,
-      addDoc,
-      doc,
-      setDoc
-    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-    // 🔹 Configuration Firebase 
-    const firebaseConfig = {
-      apiKey: "AIzaSyDF13i8rEL6fCGzBJgJ2i90ZeCoa4m0QE8",
-      authDomain: "rapport-tech.firebaseapp.com",
-      projectId: "rapport-tech",
-      storageBucket: "rapport-tech.appspot.com",
-      databaseURL: "https://rapport-tech-default-rtdb.nam5.firebasedatabase.app",
-      messagingSenderId: "809720609386",
-      appId: "1:809720609386:web:b4308319b85f288d09e813",
-      measurementId: "G-7G2Q57VHRT"
-    };
-
-    // Initialisation de Firebase et Firestore
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    // Existing code with modifications to include intervention and problem type histories
-    document.addEventListener("DOMContentLoaded", function() {
-      document.getElementById("submitToDatabase").addEventListener("click", async function(event) {
-        event.preventDefault(); // Empêche le rechargement de la page
-
-        const technicianName = document.getElementById("technicianName").value;
-        const submissionDate = document.getElementById("submissionDate").value;
-
-        // Collect data from summary table
-        const summaryTable = document.getElementById('summaryTableBody');
-        const summaryRows = Array.from(summaryTable.querySelectorAll('tr'));
-
-        // Create an object to store report data
-        const reportData = {};
-
-        // Iterate through summary rows and populate reportData
-        summaryRows.forEach(row => {
-          const [field, value] = row.querySelectorAll('td');
-          const key = field.textContent.toLowerCase()
-            .replace(/\s+/g, '_')
-            .replace(/[()]/g, '')
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '');
-
-          reportData[key] = value.textContent;
-        });
-
-        try {
-          // Utiliser le nom du technicien et la date de soumission comme partie du chemin de la collection
-          const technicianReportsRef = collection(db, "technicianReports", `${technicianName}_${submissionDate}`, "interventions");
-          await addDoc(technicianReportsRef, reportData);
-
-          alert("Rapport soumis avec succès !");
-          document.getElementById("submitToDatabase").innerText = "sent to us thank you !";
-
-          // Réinitialiser les historiques après l'envoi
-          interventionTypeHistory = [];
-          problemTypeHistory = [];
-        } catch (error) {
-          console.error("Erreur lors de l'envoi :", error);
-          alert("Erreur lors de l'envoi du rapport !");
-          document.getElementById("submitToDatabase").innerText = "Try again";
-        }
-      });
-    });
-  </script>
 </head>
 
 <body>
@@ -668,12 +594,6 @@
             <path d="M19.376 12.416L8.777 19.482c-.7.046-.137.078-.217.078-.133 0-.262-.053-.353-.146-.157-.148-.194-.368-.094-.558l3.53-6.39H5c-.202 0-.373-.116-.443-.3-.074-.181-.026-.385.116-.504l10.62-7.303c.094-.063.209-.095.323-.095.183 0 .341.084.437.232.094.147.105.333.026.49l-3.53 6.562h6.37c.204 0 .38.127.448.306.068.18.015.38-.12.495z"/>
           </svg>
           Send to Google Sheet
-        </button>
-        <button type="button" id="submitToDatabase" style="margin-top: 10px;">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M19.5 3.09L15 7.59V4h-2v7h7V9h-3.59l4.5-4.5-1.41-1.41zM4 13c0-2.21 1.79-4 4-4s4 1.79 4 4-1.79 4-4 4-4-1.79-4-4zm6 0c0-1.1-.9-2-2-2s-2 .9-2 2 .9 2 2 2 2-.9 2-2zM3 21v-2h18v2H3z"/>
-          </svg>
-          Send to TIS DB
         </button>
       </div>
     </form>
